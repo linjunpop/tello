@@ -53,17 +53,4 @@ defmodule Tello.Client do
     Logger.info("Receives data from #{inspect(socket)}, #{inspect(ip)}:#{port}, data: #{data}")
     {:noreply, state}
   end
-
-  # Client
-
-  @spec set(String.t()) :: String.t()
-  def set(command) do
-    GenServer.call(__MODULE__, {:send, command})
-  end
-
-  @spec read(String.t()) :: String.t()
-  def read(key) when key in [:speed, :battery, :time, :wifi, :sdk, :sn] do
-    command = "#{key}?"
-    GenServer.call(__MODULE__, {:send, command})
-  end
 end
