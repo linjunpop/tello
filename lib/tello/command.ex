@@ -206,4 +206,58 @@ defmodule Tello.Command do
 
     GenServer.call(tello_client, {:send, command})
   end
+
+  @doc """
+  Get current speed (cm/s).
+  """
+  def get_speed(tello_client) do
+    command = CommandBuilder.read(:speed)
+
+    GenServer.call(tello_client, {:send, command})
+  end
+
+  @doc """
+  Get current battery percentage.
+  """
+  def get_battery(tello_client) do
+    command = CommandBuilder.read(:battery)
+
+    GenServer.call(tello_client, {:send, command})
+  end
+
+  @doc """
+  Get current flight time.
+  """
+  def get_flight_time(tello_client) do
+    command = CommandBuilder.read(:flight_time)
+
+    GenServer.call(tello_client, {:send, command})
+  end
+
+  @doc """
+  Get Wi-Fi SNR.
+  """
+  def get_wifi_snr(tello_client) do
+    command = CommandBuilder.read(:wifi_snr)
+
+    GenServer.call(tello_client, {:send, command})
+  end
+
+  @doc """
+  Get Tello SDK version
+  """
+  def get_sdk_version(tello_client) do
+    command = CommandBuilder.read(:sdk_version)
+
+    GenServer.call(tello_client, {:send, command})
+  end
+
+  @doc """
+  Get Tello serial number
+  """
+  def get_serial_number(tello_client) do
+    command = CommandBuilder.read(:serial_number)
+
+    GenServer.call(tello_client, {:send, command})
+  end
 end

@@ -117,4 +117,30 @@ defmodule Tello.CommandBuilderTest do
                CommandBuilder.set(:ap, "my-router", "123123")
     end
   end
+
+  describe "#read" do
+    test "It should build the command `speed`" do
+      assert "speed?" == CommandBuilder.read(:speed)
+    end
+
+    test "It should build the command `battery`" do
+      assert "battery?" == CommandBuilder.read(:battery)
+    end
+
+    test "It should build the command `flight_time`" do
+      assert "time?" == CommandBuilder.read(:flight_time)
+    end
+
+    test "It should build the command `wifi_snr`" do
+      assert "wifi?" == CommandBuilder.read(:wifi_snr)
+    end
+
+    test "It should build the command `sdk_version`" do
+      assert "sdk?" == CommandBuilder.read(:sdk_version)
+    end
+
+    test "It should build the command `serial_number`" do
+      assert "sn?" == CommandBuilder.read(:serial_number)
+    end
+  end
 end

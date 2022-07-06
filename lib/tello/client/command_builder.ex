@@ -100,4 +100,28 @@ defmodule Tello.Client.CommandBuilder do
   def set(:ap, ssid, password) do
     "ap #{ssid} #{password}"
   end
+
+  def read(:speed) do
+    "speed?"
+  end
+
+  def read(:battery) do
+    "battery?"
+  end
+
+  def read(:flight_time) do
+    "time?"
+  end
+
+  def read(:wifi_snr) do
+    "wifi?"
+  end
+
+  def read(:sdk_version) do
+    "sdk?"
+  end
+
+  def read(:serial_number) do
+    "sn?"
+  end
 end
