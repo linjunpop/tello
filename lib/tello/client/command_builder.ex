@@ -58,4 +58,8 @@ defmodule Tello.Client.CommandBuilder do
     "jump #{x} #{y} #{z} #{speed} #{yaw} #{from_mission_pad_id} #{to_mission_pad_id}"
     |> String.trim()
   end
+
+  def set(:speed, speed) do
+    "speed #{speed}"
+  end
 end

@@ -136,4 +136,13 @@ defmodule Tello.Command do
 
     GenServer.call(tello_client, {:send, command})
   end
+
+  @doc """
+  Set speed to `speed` cm/s
+  """
+  def set_speed(tello_client, speed) when speed in 10..100 do
+    command = CommandBuilder.set(:speed, speed)
+
+    GenServer.call(tello_client, {:send, command})
+  end
 end

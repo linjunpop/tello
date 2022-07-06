@@ -84,4 +84,11 @@ defmodule Tello.CommandBuilderTest do
                CommandBuilder.control(:jump, {10, 30, 21}, 40, 51, :m1, :m3)
     end
   end
+
+  describe "#set" do
+    test "It should build command `speed`" do
+      assert "speed 30" ==
+               CommandBuilder.set(:speed, 30)
+    end
+  end
 end
