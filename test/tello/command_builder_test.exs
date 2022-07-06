@@ -105,5 +105,11 @@ defmodule Tello.CommandBuilderTest do
       assert "mon" == CommandBuilder.set(:mission_pad_detection, :on)
       assert "moff" == CommandBuilder.set(:mission_pad_detection, :off)
     end
+
+    test "It should build command `mission_pad_detection_mode`" do
+      assert "mdirection 0" == CommandBuilder.set(:mission_pad_detection_mode, :downward)
+      assert "mdirection 1" == CommandBuilder.set(:mission_pad_detection_mode, :forward)
+      assert "mdirection 2" == CommandBuilder.set(:mission_pad_detection_mode, :both)
+    end
   end
 end

@@ -71,6 +71,18 @@ defmodule Tello.Client.CommandBuilder do
     "moff"
   end
 
+  def set(:mission_pad_detection_mode, :downward) do
+    "mdirection 0"
+  end
+
+  def set(:mission_pad_detection_mode, :forward) do
+    "mdirection 1"
+  end
+
+  def set(:mission_pad_detection_mode, :both) do
+    "mdirection 2"
+  end
+
   def set(
         :rc,
         _a_axis = {a_direction, a_value},
