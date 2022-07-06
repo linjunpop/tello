@@ -227,8 +227,8 @@ defmodule Tello.Command do
   @doc """
   Get current flight time.
   """
-  def get_flight_time(tello_client) do
-    command = Builder.read(:flight_time)
+  def get_time(tello_client) do
+    command = Builder.read(:time)
 
     GenServer.call(tello_client, {:send, command})
   end

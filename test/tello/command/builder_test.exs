@@ -127,8 +127,8 @@ defmodule Tello.Command.BuilderTest do
       assert "battery?" == Builder.read(:battery)
     end
 
-    test "It should build the command `flight_time`" do
-      assert "time?" == Builder.read(:flight_time)
+    test "It should build the command `time`" do
+      assert "time?" == Builder.read(:time)
     end
 
     test "It should build the command `wifi_snr`" do

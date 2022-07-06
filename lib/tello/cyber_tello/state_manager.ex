@@ -1,6 +1,6 @@
-defmodule Tello.VirtualTello.StateManager do
+defmodule Tello.CyberTello.StateManager do
   use GenServer
-  alias Tello.VirtualTello.State
+  alias Tello.CyberTello.State
 
   def start_link(_args) do
     GenServer.start_link(__MODULE__, [], name: __MODULE__)

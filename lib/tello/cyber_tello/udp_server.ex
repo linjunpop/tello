@@ -1,4 +1,4 @@
-defmodule Tello.VirtualTello.UDPServer do
+defmodule Tello.CyberTello.UDPServer do
   @moduledoc """
   A virtual Tello which opens up a UDP server.
   Implementation based on the official documentation:
@@ -8,7 +8,7 @@ defmodule Tello.VirtualTello.UDPServer do
   use GenServer
   require Logger
 
-  alias Tello.VirtualTello.{Controller, Responder}
+  alias Tello.CyberTello.{Controller, Responder}
 
   # auto pick one by system
   @default_port 0

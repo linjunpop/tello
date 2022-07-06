@@ -1,4 +1,4 @@
-defmodule Tello.VirtualTello do
+defmodule Tello.CyberTello do
   @moduledoc false
 
   use Supervisor
@@ -10,8 +10,8 @@ defmodule Tello.VirtualTello do
   @impl true
   def init(_init_arg) do
     children = [
-      {Tello.VirtualTello.UDPServer, 0},
-      {Tello.VirtualTello.StateManager, []}
+      {Tello.CyberTello.UDPServer, 0},
+      {Tello.CyberTello.StateManager, []}
     ]
 
     opts = [strategy: :one_for_one]
@@ -21,6 +21,6 @@ defmodule Tello.VirtualTello do
   # Client
 
   def port() do
-    GenServer.call(Tello.VirtualTello.UDPServer, :port)
+    GenServer.call(Tello.CyberTello.UDPServer, :port)
   end
 end

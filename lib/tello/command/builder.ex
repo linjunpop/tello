@@ -109,7 +109,7 @@ defmodule Tello.Client.Command.Builder do
     "battery?"
   end
 
-  def read(:flight_time) do
+  def read(:time) do
     "time?"
   end
 
