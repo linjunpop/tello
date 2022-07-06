@@ -63,6 +63,14 @@ defmodule Tello.Client.CommandBuilder do
     "speed #{speed}"
   end
 
+  def set(:mission_pad_detection, :on) do
+    "mon"
+  end
+
+  def set(:mission_pad_detection, :off) do
+    "moff"
+  end
+
   def set(
         :rc,
         _a_axis = {a_direction, a_value},

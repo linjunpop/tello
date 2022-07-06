@@ -177,4 +177,14 @@ defmodule Tello.Command do
 
     GenServer.call(tello_client, {:send, command})
   end
+
+  @doc """
+  Set Mission Pad detection to on/off
+  """
+  def set_mission_pad_detection(tello_client, toggle)
+      when toggle in [:on, :off] do
+    command = CommandBuilder.set(:mission_pad_detection, toggle)
+
+    GenServer.call(tello_client, {:send, command})
+  end
 end

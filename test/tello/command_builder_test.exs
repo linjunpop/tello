@@ -100,5 +100,10 @@ defmodule Tello.CommandBuilderTest do
       assert "wifi my-tello 123123" ==
                CommandBuilder.set(:wifi, "my-tello", "123123")
     end
+
+    test "It should build command `mission_pad_detection`" do
+      assert "mon" == CommandBuilder.set(:mission_pad_detection, :on)
+      assert "moff" == CommandBuilder.set(:mission_pad_detection, :off)
+    end
   end
 end
