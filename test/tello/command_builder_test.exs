@@ -90,5 +90,10 @@ defmodule Tello.CommandBuilderTest do
       assert "speed 30" ==
                CommandBuilder.set(:speed, 30)
     end
+
+    test "It should build command `rc`" do
+      assert "rc left 100 forward 30 up 10 yaw -10" ==
+               CommandBuilder.set(:rc, {:left, 100}, {:forward, 30}, {:up, 10}, -10)
+    end
   end
 end

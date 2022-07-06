@@ -145,4 +145,27 @@ defmodule Tello.Command do
 
     GenServer.call(tello_client, {:send, command})
   end
+
+  @doc """
+  Set remote controller via four channels
+  """
+  def set_remote_controller(
+        tello_client,
+        channel_left_right = {a_direction, a_value},
+        channel_forward_backward = {b_direction, b_value},
+        channel_up_down = {c_direction, c_value},
+        yaw
+      )
+      when a_direction in [:left, :right] and
+             a_value in -100..100 and
+             b_direction in [:forward, :backward] and
+             b_value in -100..100 and
+             c_direction in [:up, :down] and
+             c_value in -100..100 and
+             yaw in -100..100 do
+    command =
+      CommandBuilder.set(:rc, channel_left_right, channel_forward_backward, channel_up_down, yaw)
+
+    GenServer.call(tello_client, {:send, command})
+  end
 end

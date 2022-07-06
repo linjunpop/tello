@@ -62,4 +62,14 @@ defmodule Tello.Client.CommandBuilder do
   def set(:speed, speed) do
     "speed #{speed}"
   end
+
+  def set(
+        :rc,
+        _a_axis = {a_direction, a_value},
+        _b_axis = {b_direction, b_value},
+        _c_axis = {c_direction, c_value},
+        yaw
+      ) do
+    "rc #{a_direction} #{a_value} #{b_direction} #{b_value} #{c_direction} #{c_value} yaw #{yaw}"
+  end
 end
