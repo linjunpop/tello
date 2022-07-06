@@ -10,6 +10,7 @@ defmodule Tello.Application do
     children = [
       # Starts a worker by calling: Tello.Worker.start_link(arg)
       # {Tello.Worker, arg}
+      {Tello.Client.Manager, []}
     ]
 
     # See https://hexdocs.pm/elixir/Supervisor.html

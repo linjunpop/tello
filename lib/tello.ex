@@ -1,18 +1,13 @@
 defmodule Tello do
-  @moduledoc """
-  Documentation for `Tello`.
-  """
+  alias Tello.Client.Manager
 
-  @doc """
-  Hello world.
+  def start_client(tello_server = {_ip, _port}) do
+    spec = {Tello.Client, tello_server}
 
-  ## Examples
+    DynamicSupervisor.start_child(Manager, spec)
+  end
 
-      iex> Tello.hello()
-      :world
-
-  """
-  def hello do
-    :world
+  def terminate_client(tello_client) do
+    DynamicSupervisor.terminate_child(Manager, tello_client)
   end
 end

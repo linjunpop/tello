@@ -1,5 +1,5 @@
 defmodule Tello.Command do
-  alias Tello.Client.CommandBuilder
+  alias Tello.Client.Command.Builder
 
   @type coordinate :: {x :: integer(), y :: integer(), z :: integer()}
   @type mission_pad_id :: :m1 | :m2 | :m3 | :m4 | :m5 | :m6 | :m7 | :m8
@@ -44,7 +44,7 @@ defmodule Tello.Command do
   """
   @spec stream(pid(), :on | :off) :: :ok | {:error, any()}
   def stream(tello_client, toggle) when toggle in [:on, :off] do
-    command = CommandBuilder.control(:stream, toggle)
+    command = Builder.control(:stream, toggle)
 
     GenServer.call(tello_client, {:send, command})
   end
@@ -55,7 +55,7 @@ defmodule Tello.Command do
     Fly #{command} for `distance` cm.
     """
     def unquote(command)(tello_client, distance) do
-      command = CommandBuilder.control(unquote(command), distance)
+      command = Builder.control(unquote(command), distance)
 
       GenServer.call(tello_client, {:send, command})
     end
@@ -67,7 +67,7 @@ defmodule Tello.Command do
   @spec rotate(pid(), :clockwise | :counterclockwise, integer()) :: :ok | {:error, any()}
   def rotate(tello_client, direction, degree)
       when direction in [:clockwise, :counterclockwise] and degree in 1..360 do
-    command = CommandBuilder.control(:rotate, direction, degree)
+    command = Builder.control(:rotate, direction, degree)
 
     GenServer.call(tello_client, {:send, command})
   end
@@ -82,7 +82,7 @@ defmodule Tello.Command do
       when x in -500..500 and y in -500..500 and z in -500..500 and
              speed in 10..100 and
              mission_pad_id in [:m1, :m2, :m3, :m4, :m5, :m6, :m7, :m8] do
-    command = CommandBuilder.control(:go, {x, y, z}, speed, mission_pad_id)
+    command = Builder.control(:go, {x, y, z}, speed, mission_pad_id)
 
     GenServer.call(tello_client, {:send, command})
   end
@@ -105,7 +105,7 @@ defmodule Tello.Command do
              first_mission_pad_id in [:m1, :m2, :m3, :m4, :m5, :m6, :m7, :m8] and
              second_mission_pad_id in [:m1, :m2, :m3, :m4, :m5, :m6, :m7, :m8] do
     command =
-      CommandBuilder.control(
+      Builder.control(
         :jump,
         {x, y, z},
         speed,
@@ -132,7 +132,7 @@ defmodule Tello.Command do
              x2 in -500..500 and y2 in -500..500 and z2 in -500..500 and
              speed in 10..100 and
              mission_pad_id in [:m1, :m2, :m3, :m4, :m5, :m6, :m7, :m8] do
-    command = CommandBuilder.control(:curve, {x1, y1, z1}, {x2, y2, z2}, speed, mission_pad_id)
+    command = Builder.control(:curve, {x1, y1, z1}, {x2, y2, z2}, speed, mission_pad_id)
 
     GenServer.call(tello_client, {:send, command})
   end
@@ -141,7 +141,7 @@ defmodule Tello.Command do
   Set speed to `speed` cm/s
   """
   def set_speed(tello_client, speed) when speed in 10..100 do
-    command = CommandBuilder.set(:speed, speed)
+    command = Builder.set(:speed, speed)
 
     GenServer.call(tello_client, {:send, command})
   end
@@ -163,8 +163,7 @@ defmodule Tello.Command do
              c_direction in [:up, :down] and
              c_value in -100..100 and
              yaw in -100..100 do
-    command =
-      CommandBuilder.set(:rc, channel_left_right, channel_forward_backward, channel_up_down, yaw)
+    command = Builder.set(:rc, channel_left_right, channel_forward_backward, channel_up_down, yaw)
 
     GenServer.call(tello_client, {:send, command})
   end
@@ -173,7 +172,7 @@ defmodule Tello.Command do
   Set Wi-Fi SSID and password
   """
   def set_wifi(tello_client, ssid, password) do
-    command = CommandBuilder.set(:wifi, ssid, password)
+    command = Builder.set(:wifi, ssid, password)
 
     GenServer.call(tello_client, {:send, command})
   end
@@ -183,7 +182,7 @@ defmodule Tello.Command do
   """
   def set_mission_pad_detection(tello_client, toggle)
       when toggle in [:on, :off] do
-    command = CommandBuilder.set(:mission_pad_detection, toggle)
+    command = Builder.set(:mission_pad_detection, toggle)
 
     GenServer.call(tello_client, {:send, command})
   end
@@ -193,7 +192,7 @@ defmodule Tello.Command do
   """
   def set_mission_pad_detection_mode(tello_client, mode)
       when mode in [:downward, :forward, :both] do
-    command = CommandBuilder.set(:mission_pad_detection_mode, mode)
+    command = Builder.set(:mission_pad_detection_mode, mode)
 
     GenServer.call(tello_client, {:send, command})
   end
@@ -202,7 +201,7 @@ defmodule Tello.Command do
   Set the Tello to station mode, and connect to the access point.
   """
   def connect_to_ap(tello_client, ssid, password) do
-    command = CommandBuilder.set(:ap, ssid, password)
+    command = Builder.set(:ap, ssid, password)
 
     GenServer.call(tello_client, {:send, command})
   end
@@ -211,7 +210,7 @@ defmodule Tello.Command do
   Get current speed (cm/s).
   """
   def get_speed(tello_client) do
-    command = CommandBuilder.read(:speed)
+    command = Builder.read(:speed)
 
     GenServer.call(tello_client, {:send, command})
   end
@@ -220,7 +219,7 @@ defmodule Tello.Command do
   Get current battery percentage.
   """
   def get_battery(tello_client) do
-    command = CommandBuilder.read(:battery)
+    command = Builder.read(:battery)
 
     GenServer.call(tello_client, {:send, command})
   end
@@ -229,7 +228,7 @@ defmodule Tello.Command do
   Get current flight time.
   """
   def get_flight_time(tello_client) do
-    command = CommandBuilder.read(:flight_time)
+    command = Builder.read(:flight_time)
 
     GenServer.call(tello_client, {:send, command})
   end
@@ -238,7 +237,7 @@ defmodule Tello.Command do
   Get Wi-Fi SNR.
   """
   def get_wifi_snr(tello_client) do
-    command = CommandBuilder.read(:wifi_snr)
+    command = Builder.read(:wifi_snr)
 
     GenServer.call(tello_client, {:send, command})
   end
@@ -247,7 +246,7 @@ defmodule Tello.Command do
   Get Tello SDK version
   """
   def get_sdk_version(tello_client) do
-    command = CommandBuilder.read(:sdk_version)
+    command = Builder.read(:sdk_version)
 
     GenServer.call(tello_client, {:send, command})
   end
@@ -256,7 +255,7 @@ defmodule Tello.Command do
   Get Tello serial number
   """
   def get_serial_number(tello_client) do
-    command = CommandBuilder.read(:serial_number)
+    command = Builder.read(:serial_number)
 
     GenServer.call(tello_client, {:send, command})
   end
