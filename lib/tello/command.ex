@@ -197,4 +197,13 @@ defmodule Tello.Command do
 
     GenServer.call(tello_client, {:send, command})
   end
+
+  @doc """
+  Set the Tello to station mode, and connect to the access point.
+  """
+  def connect_to_ap(tello_client, ssid, password) do
+    command = CommandBuilder.set(:ap, ssid, password)
+
+    GenServer.call(tello_client, {:send, command})
+  end
 end

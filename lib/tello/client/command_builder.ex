@@ -96,4 +96,8 @@ defmodule Tello.Client.CommandBuilder do
   def set(:wifi, ssid, password) do
     "wifi #{ssid} #{password}"
   end
+
+  def set(:ap, ssid, password) do
+    "ap #{ssid} #{password}"
+  end
 end

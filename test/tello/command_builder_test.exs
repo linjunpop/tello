@@ -111,5 +111,10 @@ defmodule Tello.CommandBuilderTest do
       assert "mdirection 1" == CommandBuilder.set(:mission_pad_detection_mode, :forward)
       assert "mdirection 2" == CommandBuilder.set(:mission_pad_detection_mode, :both)
     end
+
+    test "It should build command `ap`" do
+      assert "ap my-router 123123" ==
+               CommandBuilder.set(:ap, "my-router", "123123")
+    end
   end
 end
