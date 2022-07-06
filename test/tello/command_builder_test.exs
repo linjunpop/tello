@@ -95,5 +95,10 @@ defmodule Tello.CommandBuilderTest do
       assert "rc left 100 forward 30 up 10 yaw -10" ==
                CommandBuilder.set(:rc, {:left, 100}, {:forward, 30}, {:up, 10}, -10)
     end
+
+    test "It should build command `wifi`" do
+      assert "wifi my-tello 123123" ==
+               CommandBuilder.set(:wifi, "my-tello", "123123")
+    end
   end
 end

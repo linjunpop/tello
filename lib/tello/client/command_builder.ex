@@ -72,4 +72,8 @@ defmodule Tello.Client.CommandBuilder do
       ) do
     "rc #{a_direction} #{a_value} #{b_direction} #{b_value} #{c_direction} #{c_value} yaw #{yaw}"
   end
+
+  def set(:wifi, ssid, password) do
+    "wifi #{ssid} #{password}"
+  end
 end

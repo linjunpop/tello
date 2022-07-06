@@ -168,4 +168,13 @@ defmodule Tello.Command do
 
     GenServer.call(tello_client, {:send, command})
   end
+
+  @doc """
+  Set Wi-Fi SSID and password
+  """
+  def set_wifi(tello_client, ssid, password) do
+    command = CommandBuilder.set(:wifi, ssid, password)
+
+    GenServer.call(tello_client, {:send, command})
+  end
 end
