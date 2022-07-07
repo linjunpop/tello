@@ -24,11 +24,18 @@ defmodule Tello.CyberTello.Processor.ControlUnit do
     {:ok, struct!(State)}
   end
 
+  def process_command(state, "stop") do
+    new_state =
+      state
+      |> set(:speed, %State.Speed{x: 0, y: 0, z: 0})
+      |> set(:acceleration, %State.Acceleration{x: 0, y: 0, z: 0})
+
+    {:ok, new_state}
+  end
+
   # private functions
 
   defp set(state, key, value) do
-    Logger.debug("Set state for #{key} to #{value}")
-
     state
     |> Map.put(key, value)
   end

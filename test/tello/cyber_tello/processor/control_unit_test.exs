@@ -34,13 +34,25 @@ defmodule Tello.CyberTello.Processor.ControlUnitTest do
       assert nil == Map.get(new_state, :takeoff_at)
     end
 
-    test "it should reset Tello" do
+    test "it should halt Tello" do
       state = %State{takeoff_at: NaiveDateTime.utc_now(), sdk_mode?: true}
 
       {:ok, new_state} = ControlUnit.process_command(state, "emergency")
 
       assert false == Map.get(new_state, :sdk_mode?)
       assert nil == Map.get(new_state, :takeoff_at)
+    end
+
+    test "it should stop Tello" do
+      state = %State{
+        speed: %State.Speed{x: 0, y: 3, z: 9},
+        acceleration: %State.Acceleration{x: 12, y: 22, z: 9}
+      }
+
+      {:ok, new_state} = ControlUnit.process_command(state, "stop")
+
+      assert %State.Speed{x: 0, y: 0, z: 0} == Map.get(new_state, :speed)
+      assert %State.Acceleration{x: 0, y: 0, z: 0} == Map.get(new_state, :acceleration)
     end
   end
 end
