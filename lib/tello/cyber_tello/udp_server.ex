@@ -8,7 +8,7 @@ defmodule Tello.CyberTello.UDPServer do
   use GenServer
   require Logger
 
-  alias Tello.CyberTello.{Controller, Responder}
+  alias Tello.CyberTello.{Processor}
 
   # auto pick one by system
   @default_port 0
@@ -30,21 +30,22 @@ defmodule Tello.CyberTello.UDPServer do
   end
 
   @impl true
-  def handle_info({:udp, _socket, ip, port, data}, socket) do
-    Logger.debug("Receives data from #{inspect(socket)}, #{inspect(ip)}:#{port}, data: #{data}")
-
-    handle_packet({ip, port}, data, socket)
+  def handle_call({:reply, message, _to_server = {ip, port}}, _from, socket) do
+    :gen_udp.send(socket, ip, port, message)
   end
 
-  defp handle_packet(_from_server = {ip, port}, data, socket) do
-    case Controller.handle_command(data) do
-      {:ok, _state} ->
-        Responder.reply(socket, {ip, port}, "ok")
+  @impl true
+  def handle_info({:udp, _socket, ip, port, data}, _state) do
+    Processor.process_command(data, {ip, port})
+  end
 
-      {:error, err} ->
-        Logger.error(inspect(err))
-    end
+  # Client
 
-    {:noreply, socket}
+  def port do
+    GenServer.call(__MODULE__, :port)
+  end
+
+  def reply(message, from) do
+    GenServer.call(__MODULE__, {:reply, message, from})
   end
 end
