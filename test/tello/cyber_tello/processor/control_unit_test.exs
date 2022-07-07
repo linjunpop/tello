@@ -131,4 +131,20 @@ defmodule Tello.CyberTello.Processor.ControlUnitTest do
       # TODO: noop now as the state don't have a coordinate.
     end
   end
+
+  describe "forward & back" do
+    test "it should fly forward" do
+      state = %State{}
+      {:ok, _new_state} = ControlUnit.process_command(state, "forward 30")
+
+      # TODO: noop now as the state don't have a coordinate.
+    end
+
+    test "it should fly back" do
+      state = %State{}
+      {:ok, _new_state} = ControlUnit.process_command(state, "back 43")
+
+      # TODO: noop now as the state don't have a coordinate.
+    end
+  end
 end

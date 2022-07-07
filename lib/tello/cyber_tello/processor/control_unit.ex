@@ -79,6 +79,16 @@ defmodule Tello.CyberTello.Processor.ControlUnit do
     {:ok, state}
   end
 
+  def process_command(state, "forward" <> " " <> _value) do
+    # TODO: noop
+    {:ok, state}
+  end
+
+  def process_command(state, "back" <> " " <> _value) do
+    # TODO: noop
+    {:ok, state}
+  end
+
   # private functions
 
   defp set(state, key, value) do
