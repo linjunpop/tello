@@ -3,17 +3,17 @@ defmodule Tello.CyberTello do
 
   use Supervisor
 
-  alias Tello.CyberTello.{UDPServer, StateManager}
+  alias Tello.CyberTello.{UDPServer, StateManager, State}
 
-  def start_link(init_arg) do
-    Supervisor.start_link(__MODULE__, init_arg, name: __MODULE__)
+  def start_link(%State{} = initial_state \\ struct(State)) do
+    Supervisor.start_link(__MODULE__, initial_state, name: __MODULE__)
   end
 
   @impl true
-  def init(_init_arg) do
+  def init(state) do
     children = [
       {UDPServer, 0},
-      {StateManager, []}
+      {StateManager, [state: state]}
     ]
 
     opts = [strategy: :one_for_one]

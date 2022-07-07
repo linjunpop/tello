@@ -12,6 +12,10 @@ defmodule Tello.CyberTello.Controller do
     GenServer.call(Tello.CyberTello.StateManager, {:set, :takeoff_at, NaiveDateTime.utc_now()})
   end
 
+  def handle_command("land") do
+    GenServer.call(Tello.CyberTello.StateManager, {:set, :takeoff_at, nil})
+  end
+
   def handle_command(rest) do
     Logger.debug("Received command: #{rest}")
 

@@ -7,7 +7,7 @@ defmodule Tello.CyberTello.State do
 
   @type t :: %__MODULE__{
           sdk_mode?: boolean(),
-          mission_pad: MissionPad.t(),
+          mission_pad: MissionPad.t() | nil,
           speed: Speed.t(),
           battery: float(),
           takeoff_at: NaiveDateTime.t(),
@@ -26,18 +26,18 @@ defmodule Tello.CyberTello.State do
 
   defstruct sdk_mode?: false,
             mission_pad: nil,
-            battery: nil,
+            battery: 0.9,
             takeoff_at: nil,
-            wifi_snr: nil,
+            wifi_snr: 0.3,
             sdk_version: "2.0",
             serial_number: "virtual-tello",
-            pitch: nil,
-            roll: nil,
-            yaw: nil,
-            speed: nil,
-            temperature: nil,
-            tof_distance: nil,
-            height: nil,
-            barometer: nil,
-            acceleration: nil
+            pitch: 0,
+            roll: 0,
+            yaw: 0,
+            speed: %Speed{x: 0, y: 0, z: 0},
+            temperature: %Temperature{low: 13, high: 15},
+            tof_distance: 10,
+            height: 0,
+            barometer: 4_955_163,
+            acceleration: %Acceleration{x: 0, y: 0, z: 0}
 end

@@ -3,14 +3,12 @@ defmodule Tello.CyberTello.StateManager do
   require Logger
   alias Tello.CyberTello.State
 
-  def start_link(_args) do
-    GenServer.start_link(__MODULE__, [], name: __MODULE__)
+  def start_link(state: state) do
+    GenServer.start_link(__MODULE__, state, name: __MODULE__)
   end
 
   @impl true
-  def init(_state) do
-    state = %State{}
-
+  def init(%State{} = state) do
     {:ok, state}
   end
 
