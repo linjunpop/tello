@@ -99,4 +99,20 @@ defmodule Tello.CyberTello.Processor.ControlUnitTest do
       assert 72 == Map.get(new_state, :height)
     end
   end
+
+  describe "down" do
+    test "it should fly down" do
+      state = %State{height: 32}
+      {:ok, new_state} = ControlUnit.process_command(state, "down 30")
+
+      assert 2 == Map.get(new_state, :height)
+    end
+
+    test "it should only fly down to zero" do
+      state = %State{height: 32}
+      {:ok, new_state} = ControlUnit.process_command(state, "down 43")
+
+      assert 0 == Map.get(new_state, :height)
+    end
+  end
 end

@@ -57,6 +57,18 @@ defmodule Tello.CyberTello.Processor.ControlUnit do
     {:ok, new_state}
   end
 
+  def process_command(%State{height: current_height} = state, "down" <> " " <> value) do
+    height = current_height - String.to_integer(value)
+
+    height = if height < 0, do: 0, else: height
+
+    new_state =
+      state
+      |> set(:height, height)
+
+    {:ok, new_state}
+  end
+
   # private functions
 
   defp set(state, key, value) do
