@@ -21,7 +21,8 @@ defmodule Tello.CyberTello.State do
           tof_distance: integer(),
           height: integer(),
           barometer: integer(),
-          acceleration: Acceleration.t()
+          acceleration: Acceleration.t(),
+          video_stream: :on | :off
         }
 
   defstruct sdk_mode?: false,
@@ -39,5 +40,6 @@ defmodule Tello.CyberTello.State do
             tof_distance: 10,
             height: 0,
             barometer: 4_955_163,
-            acceleration: %Acceleration{x: 0, y: 0, z: 0}
+            acceleration: %Acceleration{x: 0, y: 0, z: 0},
+            video_stream: :off
 end

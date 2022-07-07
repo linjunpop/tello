@@ -54,5 +54,21 @@ defmodule Tello.CyberTello.Processor.ControlUnitTest do
       assert %State.Speed{x: 0, y: 0, z: 0} == Map.get(new_state, :speed)
       assert %State.Acceleration{x: 0, y: 0, z: 0} == Map.get(new_state, :acceleration)
     end
+
+    test "it should turn on the video stream" do
+      state = %State{}
+
+      {:ok, new_state} = ControlUnit.process_command(state, "streamon")
+
+      assert :on == Map.get(new_state, :video_stream)
+    end
+
+    test "it should turn off the video stream" do
+      state = %State{video_stream: :on}
+
+      {:ok, new_state} = ControlUnit.process_command(state, "streamoff")
+
+      assert :off == Map.get(new_state, :video_stream)
+    end
   end
 end

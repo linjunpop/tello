@@ -33,6 +33,22 @@ defmodule Tello.CyberTello.Processor.ControlUnit do
     {:ok, new_state}
   end
 
+  def process_command(state, "streamon") do
+    new_state =
+      state
+      |> set(:video_stream, :on)
+
+    {:ok, new_state}
+  end
+
+  def process_command(state, "streamoff") do
+    new_state =
+      state
+      |> set(:video_stream, :off)
+
+    {:ok, new_state}
+  end
+
   # private functions
 
   defp set(state, key, value) do
