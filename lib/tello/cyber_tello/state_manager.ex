@@ -1,5 +1,6 @@
 defmodule Tello.CyberTello.StateManager do
   use GenServer
+  require Logger
   alias Tello.CyberTello.State
 
   def start_link(_args) do
@@ -20,6 +21,8 @@ defmodule Tello.CyberTello.StateManager do
 
   @impl true
   def handle_call({:set, key, value}, _from, state) do
+    Logger.debug("Set state for #{key} to #{value}")
+
     new_state =
       state
       |> Map.put(key, value)
