@@ -3,7 +3,7 @@ defmodule Tello.CyberTello.Processor.ControlUnitTest do
   alias Tello.CyberTello.State
   alias Tello.CyberTello.Processor.ControlUnit
 
-  describe "Change the state" do
+  describe "command" do
     test "it should set SDK mode" do
       state = %State{sdk_mode?: false}
 
@@ -11,7 +11,9 @@ defmodule Tello.CyberTello.Processor.ControlUnitTest do
 
       assert true == Map.get(new_state, :sdk_mode?)
     end
+  end
 
+  describe "takeoff" do
     test "it should launch Tello" do
       state = %State{takeoff_at: nil}
 
@@ -25,7 +27,9 @@ defmodule Tello.CyberTello.Processor.ControlUnitTest do
 
       assert diff <= 100
     end
+  end
 
+  describe "land" do
     test "it should land Tello" do
       state = %State{takeoff_at: NaiveDateTime.utc_now()}
 
@@ -33,7 +37,9 @@ defmodule Tello.CyberTello.Processor.ControlUnitTest do
 
       assert nil == Map.get(new_state, :takeoff_at)
     end
+  end
 
+  describe "emergency" do
     test "it should halt Tello" do
       state = %State{takeoff_at: NaiveDateTime.utc_now(), sdk_mode?: true}
 
@@ -42,7 +48,9 @@ defmodule Tello.CyberTello.Processor.ControlUnitTest do
       assert false == Map.get(new_state, :sdk_mode?)
       assert nil == Map.get(new_state, :takeoff_at)
     end
+  end
 
+  describe "stop" do
     test "it should stop Tello" do
       state = %State{
         speed: %State.Speed{x: 0, y: 3, z: 9},
@@ -54,7 +62,9 @@ defmodule Tello.CyberTello.Processor.ControlUnitTest do
       assert %State.Speed{x: 0, y: 0, z: 0} == Map.get(new_state, :speed)
       assert %State.Acceleration{x: 0, y: 0, z: 0} == Map.get(new_state, :acceleration)
     end
+  end
 
+  describe "stream" do
     test "it should turn on the video stream" do
       state = %State{}
 
@@ -69,6 +79,24 @@ defmodule Tello.CyberTello.Processor.ControlUnitTest do
       {:ok, new_state} = ControlUnit.process_command(state, "streamoff")
 
       assert :off == Map.get(new_state, :video_stream)
+    end
+  end
+
+  describe "up" do
+    test "it should fly up from ground" do
+      state = %State{}
+
+      {:ok, new_state} = ControlUnit.process_command(state, "up 30")
+
+      assert 30 == Map.get(new_state, :height)
+    end
+
+    test "it should fly up high" do
+      state = %State{height: 42}
+
+      {:ok, new_state} = ControlUnit.process_command(state, "up 30")
+
+      assert 72 == Map.get(new_state, :height)
     end
   end
 end
