@@ -115,4 +115,20 @@ defmodule Tello.CyberTello.Processor.ControlUnitTest do
       assert 0 == Map.get(new_state, :height)
     end
   end
+
+  describe "left & right" do
+    test "it should fly left" do
+      state = %State{}
+      {:ok, _new_state} = ControlUnit.process_command(state, "left 30")
+
+      # TODO: noop now as the state don't have a coordinate.
+    end
+
+    test "it should fly right" do
+      state = %State{}
+      {:ok, _new_state} = ControlUnit.process_command(state, "right 43")
+
+      # TODO: noop now as the state don't have a coordinate.
+    end
+  end
 end
