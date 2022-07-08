@@ -1,4 +1,8 @@
 defmodule Tello.Command do
+  @moduledoc """
+  Collection of functions to send command to a `Tello.Client`.
+  """
+
   alias Tello.Client.Command.Builder
 
   @type coordinate :: {x :: integer(), y :: integer(), z :: integer()}
@@ -60,6 +64,22 @@ defmodule Tello.Command do
       GenServer.call(tello_client, {:send, command})
     end
   end)
+
+  @doc """
+  Flip `direction`
+
+  Available direction:
+  - `:left`
+  - `:right`
+  - `forward`
+  - `back`
+  """
+  def flip(tello_client, direction)
+      when direction in [:left, :right, :forward, :back] do
+    command = Builder.control(:flip, direction)
+
+    GenServer.call(tello_client, {:send, command})
+  end
 
   @doc """
   Rotate `degree` degrees on `direction`.

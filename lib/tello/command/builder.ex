@@ -1,4 +1,6 @@
 defmodule Tello.Client.Command.Builder do
+  @moduledoc false
+
   def control(command) when command in [:command, :takeoff, :land, :emergency, :stop] do
     "#{command}"
   end

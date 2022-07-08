@@ -1,5 +1,10 @@
 defmodule Tello.Client do
+  @moduledoc """
+  GenServer impl to connect to a Tello.
+  """
+
   defmodule Tello.Client.State do
+    @moduledoc false
     defstruct [:socket, :tello_server]
   end
 
