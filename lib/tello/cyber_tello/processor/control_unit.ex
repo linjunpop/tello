@@ -118,6 +118,22 @@ defmodule Tello.CyberTello.Processor.ControlUnit do
     {:ok, new_state}
   end
 
+  def process_command(%State{yaw: yaw} = state, "cw" <> " " <> degree) do
+    new_yaw =
+      (yaw + String.to_integer(degree))
+      |> Integer.mod(360)
+
+    new_state =
+      state
+      |> set(:yaw, new_yaw)
+
+    {:ok, new_state}
+  end
+
+  def process_command(state, "ccw" <> " " <> degree) do
+    process_command(state, "cw #{360 - String.to_integer(degree)}")
+  end
+
   # private functions
 
   defp set(state, key, value) do
