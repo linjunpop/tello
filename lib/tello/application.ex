@@ -8,8 +8,6 @@ defmodule Tello.Application do
   @impl true
   def start(_type, _args) do
     children = [
-      # Starts a worker by calling: Tello.Worker.start_link(arg)
-      # {Tello.Worker, arg}
       {Tello.Client.Manager, []}
     ]
 
