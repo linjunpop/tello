@@ -99,6 +99,25 @@ defmodule Tello.CyberTello.Processor.ControlUnit do
     {:ok, state}
   end
 
+  def process_command(state, "flip" <> " " <> direction) do
+    new_state =
+      case direction do
+        "l" ->
+          state
+
+        "r" ->
+          state
+
+        "f" ->
+          state
+
+        "b" ->
+          state
+      end
+
+    {:ok, new_state}
+  end
+
   # private functions
 
   defp set(state, key, value) do

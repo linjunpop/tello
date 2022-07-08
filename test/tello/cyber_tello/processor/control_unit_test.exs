@@ -147,4 +147,12 @@ defmodule Tello.CyberTello.Processor.ControlUnitTest do
       # TODO: noop now as the state don't have a coordinate.
     end
   end
+
+  describe "flip" do
+    test "it should flip" do
+      state = %State{}
+
+      {:ok, _new_state} = ControlUnit.process_command(state, "flip l")
+    end
+  end
 end
