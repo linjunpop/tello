@@ -1,8 +1,9 @@
-defmodule Tello.CyberTello.UDPServer do
+defmodule Tello.CyberTello.Gateway do
   @moduledoc """
-  A virtual Tello which opens up a UDP server.
-  Implementation based on the official documentation:
-  https://dl-cdn.ryzerobotics.com/downloads/Tello/Tello%20SDK%202.0%20User%20Guide.pdf
+  Network Gateway for `Tello.CyberTello`.
+
+  Opens up the UDP server to receive commands from `Tello.Client`
+  and reply message too.
   """
 
   use GenServer
@@ -13,6 +14,11 @@ defmodule Tello.CyberTello.UDPServer do
   # auto pick one by system
   @default_port 0
 
+  @doc """
+  Start the network gateway, using UDP `port`.
+
+  The `port` default to `0`, which the underlying OS assigns a free UDP port.
+  """
   def start_link(port \\ @default_port) do
     GenServer.start_link(__MODULE__, %{port: port}, name: __MODULE__)
   end
@@ -41,10 +47,10 @@ defmodule Tello.CyberTello.UDPServer do
 
   # Client
 
-  def port do
-    GenServer.call(__MODULE__, :port)
-  end
-
+  @doc """
+  Reply message to `Tello.Client`
+  """
+  @spec reply(String.t(), {:inet.ip_address(), :inet.port_number()}) :: :ok | {:error, any()}
   def reply(message, from) do
     GenServer.call(__MODULE__, {:reply, message, from})
   end

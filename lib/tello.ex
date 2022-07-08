@@ -1,4 +1,8 @@
 defmodule Tello do
+  @moduledoc """
+  An unofficial Ryze Tech Tello SDK
+  """
+
   alias Tello.Client.Manager
 
   def start_client(tello_server = {_ip, _port}) do

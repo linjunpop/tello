@@ -1,18 +1,77 @@
 defmodule Tello.CyberTello do
-  @moduledoc false
+  @moduledoc """
+  Tello in Cyberspace 👾
+
+  This module acts as a virtual Tello, receives commands,
+  then process and change the state of the virtual Tello.
+
+  Implementation based on the official documentation:
+  https://dl-cdn.ryzerobotics.com/downloads/Tello/Tello%20SDK%202.0%20User%20Guide.pdf
+
+  ## Architecture
+
+  ```mermaid
+  flowchart TD
+    subgraph Client
+      Tello.Client((Tello.Client))
+    end
+
+    subgraph CyberTello
+      Gateway(Tello.CyberTello.Gateway)
+      Memory[(Tello.CyberTello.Memory)]
+
+      subgraph CPU
+        Processor(Tello.CyberTello.Processor)
+        ControlUnit(Tello.CyberTello.ControlUnit)
+
+        Processor -.- ControlUnit
+      end
+
+      Memory -->|Save State| Processor
+
+      Tello.Client -->|Send command| Gateway
+
+      Gateway -->|Pass command| Processor
+      Gateway -->|Reply| Tello.Client
+
+      Processor -->|Read State| Memory
+    end
+  ```
+
+  ## Usage
+
+  ```elixir
+  # Start CyberTello
+  {:ok, cyber_tello} = Tello.CyberTello.start_link()
+
+  # Get the UDP port which CyberTello receive messages
+  {:ok, cyber_tello_port} = Tello.CyberTello.port()
+
+  # Then you can initial a `Tello.Client` connects to `Tello.CyberTello`
+  {:ok, tello_client} = Tello.start_client({{127, 0, 0, 1}, cyber_tello_port})
+
+  # Send commands to `Tello.CyberTello`
+  Tello.Command.command(tello_client)
+  ```
+  """
 
   use Supervisor
 
-  alias Tello.CyberTello.{UDPServer, Memory}
+  alias Tello.CyberTello.{Gateway, Memory}
 
-  def start_link(initial_args) do
+  @doc """
+  Start a CyberTello.
+
+  You can pass an initial state as `initial_args`, please check `Tello.CyberTello.State`.
+  """
+  def start_link(initial_args \\ %{}) do
     Supervisor.start_link(__MODULE__, initial_args, name: __MODULE__)
   end
 
   @impl true
   def init(initial_args) do
     children = [
-      {UDPServer, 0},
+      {Gateway, 0},
       {Memory, [state: initial_args]}
     ]
 
@@ -22,12 +81,15 @@ defmodule Tello.CyberTello do
 
   # Client
 
+  @doc """
+  Get the UDP port used by `Tello.CyberTello` to receives commands
+  """
   def port() do
-    GenServer.call(UDPServer, :port)
+    GenServer.call(Gateway, :port)
   end
 
   @doc false
-  def send_command(command) do
+  def test_command(command) do
     with {:ok, socket} <- :gen_udp.open(0),
          {:ok, port} <- port(),
          :ok <- :gen_udp.connect(socket, {127, 0, 0, 1}, port),

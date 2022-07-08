@@ -1,6 +1,12 @@
 defmodule Tello.CyberTello.State do
   @moduledoc """
   The CyberTello's state
+
+  ## See also
+  - `Tello.CyberTello.State.Acceleration`
+  - `Tello.CyberTello.State.MissionPad`
+  - `Tello.CyberTello.State.Speed`
+  - `Tello.CyberTello.State.Temperature`
   """
 
   alias Tello.CyberTello.State.{MissionPad, Speed, Temperature, Acceleration}

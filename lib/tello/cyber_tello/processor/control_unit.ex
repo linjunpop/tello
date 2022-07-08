@@ -1,8 +1,18 @@
 defmodule Tello.CyberTello.Processor.ControlUnit do
+  @moduledoc """
+  The control unit for `Tello.CyberTello.Processor`.
+  """
+
   require Logger
 
   alias Tello.CyberTello.{State}
 
+  @doc """
+  Mutate the `state` based on the `command`.
+
+  Returns new `Tello.CyberTello.State`.
+  """
+  @spec process_command(State.t(), String.t()) :: {:ok, State.t()} | {:error, any()}
   def process_command(state, "command") do
     new_state = set(state, :sdk_mode?, true)
 

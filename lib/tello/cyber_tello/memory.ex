@@ -1,4 +1,10 @@
 defmodule Tello.CyberTello.Memory do
+  @moduledoc """
+  The module to demonstrate Memory for `Tello.CyberTello`.
+
+  Which persist Tello's state in memory.
+  """
+
   use GenServer
   require Logger
   alias Tello.CyberTello.State
