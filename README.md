@@ -1,6 +1,6 @@
 # Tello
 
-An unofficial Ryze Tech Tello SDK.
+An unofficial [Ryze Tello](https://www.ryzerobotics.com/tello-edu) SDK.
 
 ## Installation
 
