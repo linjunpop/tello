@@ -5,7 +5,7 @@ defmodule Tello.CyberTello.Processor do
 
   require Logger
 
-  alias Tello.CyberTello.{Gateway, Memory}
+  alias Tello.CyberTello.{Gateway, Memory, State}
   alias Tello.CyberTello.Processor.ControlUnit
 
   @doc """
@@ -21,7 +21,7 @@ defmodule Tello.CyberTello.Processor do
     current_state = Memory.get()
 
     case ControlUnit.process_command(current_state, command) do
-      {:ok, new_state} ->
+      {:ok, %State{} = new_state} ->
         Memory.set(new_state)
         Gateway.reply("ok", from)
 

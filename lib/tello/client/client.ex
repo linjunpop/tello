@@ -1,6 +1,6 @@
 defmodule Tello.Client do
   @moduledoc """
-  GenServer impl to connect to a Tello.
+  GenServer to connect to a Tello.
   """
 
   defmodule Tello.Client.State do

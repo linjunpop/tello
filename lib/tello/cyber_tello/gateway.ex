@@ -36,13 +36,17 @@ defmodule Tello.CyberTello.Gateway do
   end
 
   @impl true
-  def handle_call({:reply, message, _to_server = {ip, port}}, _from, socket) do
+  def handle_cast({:reply, message, _to_server = {ip, port}}, socket) do
     :gen_udp.send(socket, ip, port, message)
+
+    {:noreply, socket}
   end
 
   @impl true
-  def handle_info({:udp, _socket, ip, port, data}, _state) do
+  def handle_info({:udp, _socket, ip, port, data}, state) do
     Processor.process_command(data, {ip, port})
+
+    {:noreply, state}
   end
 
   # Client
@@ -52,6 +56,6 @@ defmodule Tello.CyberTello.Gateway do
   """
   @spec reply(String.t(), {:inet.ip_address(), :inet.port_number()}) :: :ok | {:error, any()}
   def reply(message, from) do
-    GenServer.call(__MODULE__, {:reply, message, from})
+    GenServer.cast(__MODULE__, {:reply, message, from})
   end
 end

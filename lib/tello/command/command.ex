@@ -11,7 +11,7 @@ defmodule Tello.Command do
   @doc """
   Enable Tello's SDK mode.
   """
-  def command(tello_client) do
+  def enable(tello_client) do
     GenServer.call(tello_client, {:send, "command"})
   end
 

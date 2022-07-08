@@ -14,6 +14,7 @@ defmodule Tello.MixProject do
       name: "Tello",
       source_url: "https://github.com/linjunpop/tello",
       docs: [
+        main: "Tello",
         groups_for_modules: [
           Client: ~r/Tello.Client/,
           "Cyber Tello": ~r/Tello.CyberTello/
@@ -51,7 +52,7 @@ defmodule Tello.MixProject do
 
   defp before_closing_body_tag(:html) do
     """
-    <script src="https://cdn.jsdelivr.net/npm/mermaid@8.13.3/dist/mermaid.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/mermaid@9.1.3/dist/mermaid.min.js"></script>
     <script>
       document.addEventListener("DOMContentLoaded", function () {
       mermaid.initialize({ startOnLoad: false });
