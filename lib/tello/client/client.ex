@@ -15,23 +15,17 @@ defmodule Tello.Client do
 
   # Server (callbacks)
 
-  @spec start_link([], {:inet.ip_address(), :inet.port_number()}) :: GenServer.on_start()
-  def start_link([], tello_server = {_ip, _port} \\ {{192, 168, 10, 1}, 8889}) do
-    uid =
-      :erlang.make_ref()
-      |> :erlang.ref_to_list()
-      |> List.to_string()
-
-    GenServer.start_link(__MODULE__, tello_server, name: :"#{__MODULE__}.#{uid}")
+  def start_link(uid: uid, arg: [ip: ip, port: port]) do
+    GenServer.start_link(__MODULE__, [ip: ip, port: port], name: :"#{__MODULE__}.#{uid}")
   end
 
   @impl true
-  def init(tello_server) do
+  def init(ip: ip, port: port) do
     {:ok, socket} = :gen_udp.open(0, [:binary, active: true])
 
     state = %State{
       socket: socket,
-      tello_server: tello_server
+      tello_server: {ip, port}
     }
 
     {:ok, state}

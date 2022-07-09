@@ -4,8 +4,8 @@
 {:ok, tello_server_port} = Tello.CyberTello.port()
 |> IO.inspect()
 
-{:ok, tello_client} = Tello.start_client({127, 0, 0, 1}, tello_server_port)
+{:ok, supervisor, client, status_listener} = Tello.start(client: [ip: {127, 0, 0, 1}, port: tello_server_port])
 |> IO.inspect()
 
-Tello.Command.enable(tello_client)
-Tello.Command.takeoff(tello_client)
+Tello.Command.enable(client)
+Tello.Command.takeoff(client)
