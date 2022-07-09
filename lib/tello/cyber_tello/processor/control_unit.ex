@@ -134,6 +134,19 @@ defmodule Tello.CyberTello.Processor.ControlUnit do
     process_command(state, "cw #{360 - String.to_integer(degree)}")
   end
 
+  def process_command(state, "go" <> " " <> go_args) do
+    # TODO: noop
+    case String.split(go_args, " ", parts: 5, trim: false) do
+      [_x, _y, _z, _speed, _mission_pad_i] ->
+        nil
+
+      [_x, _y, _z, _speed] ->
+        nil
+    end
+
+    {:ok, state}
+  end
+
   # private functions
 
   defp set(state, key, value) do

@@ -165,7 +165,7 @@ defmodule Tello.CyberTello.Processor.ControlUnitTest do
       assert 30 == new_state.yaw
     end
 
-    test "it should rotate clockwise more than " do
+    test "it should rotate clockwise more than 360 degree" do
       state = %State{yaw: 20}
 
       {:ok, new_state} = ControlUnit.process_command(state, "cw 350")
@@ -181,12 +181,22 @@ defmodule Tello.CyberTello.Processor.ControlUnitTest do
       assert 330 == new_state.yaw
     end
 
-    test "it should rotate counterclockwise more than " do
+    test "it should rotate counterclockwise more than 360 degree" do
       state = %State{yaw: 20}
 
       {:ok, new_state} = ControlUnit.process_command(state, "ccw 350")
 
       assert 30 == new_state.yaw
+    end
+  end
+
+  describe "go" do
+    test "it should go to coordinate" do
+      state = %State{}
+
+      {:ok, new_state} = ControlUnit.process_command(state, "go 0 300 0 10")
+
+      # TODO: noop
     end
   end
 end
