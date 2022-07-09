@@ -92,7 +92,25 @@ defmodule Tello.Client.Command.Builder do
         _c_axis = {c_direction, c_value},
         yaw
       ) do
-    "rc #{a_direction} #{a_value} #{b_direction} #{b_value} #{c_direction} #{c_value} yaw #{yaw}"
+    a_axis_value =
+      case a_direction do
+        :left -> -a_value
+        :right -> a_value
+      end
+
+    b_axis_value =
+      case b_direction do
+        :forward -> b_value
+        :backward -> -b_value
+      end
+
+    c_axis_value =
+      case c_direction do
+        :up -> c_value
+        :down -> -c_value
+      end
+
+    "rc #{a_axis_value} #{b_axis_value} #{c_axis_value} #{yaw}"
   end
 
   def set(:wifi, ssid, password) do

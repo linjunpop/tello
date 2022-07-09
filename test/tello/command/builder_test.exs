@@ -92,7 +92,7 @@ defmodule Tello.Command.BuilderTest do
     end
 
     test "It should build command `rc`" do
-      assert "rc left 100 forward 30 up 10 yaw -10" ==
+      assert "rc -100 30 10 -10" ==
                Builder.set(:rc, {:left, 100}, {:forward, 30}, {:up, 10}, -10)
     end
 

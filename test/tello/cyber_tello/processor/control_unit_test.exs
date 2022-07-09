@@ -296,4 +296,16 @@ defmodule Tello.CyberTello.Processor.ControlUnitTest do
       assert "Please enable Mission Pad detection first" == message
     end
   end
+
+  describe "remote controller" do
+    test "it should set remote controller's controls" do
+      state = %State{mission_pad: %State.MissionPad{}}
+
+      command = "rc -90 10 0 90"
+
+      {:ok, new_state} = ControlUnit.process_command(state, command)
+
+      # noop
+    end
+  end
 end

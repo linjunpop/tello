@@ -177,11 +177,11 @@ defmodule Tello.Command do
         yaw
       )
       when a_direction in [:left, :right] and
-             a_value in -100..100 and
+             a_value in 0..100 and
              b_direction in [:forward, :backward] and
-             b_value in -100..100 and
+             b_value in 0..100 and
              c_direction in [:up, :down] and
-             c_value in -100..100 and
+             c_value in 0..100 and
              yaw in -100..100 do
     command = Builder.set(:rc, channel_left_right, channel_forward_backward, channel_up_down, yaw)
 

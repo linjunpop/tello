@@ -222,6 +222,10 @@ defmodule Tello.CyberTello.Processor.ControlUnit do
     {:ok, new_state}
   end
 
+  def process_command(state, "rc" <> " " <> _rc_args) do
+    {:ok, state}
+  end
+
   # private functions
 
   defp set(state, key, value) do
