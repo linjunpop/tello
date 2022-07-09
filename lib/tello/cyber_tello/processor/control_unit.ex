@@ -160,6 +160,15 @@ defmodule Tello.CyberTello.Processor.ControlUnit do
     {:ok, state}
   end
 
+  def process_command(state, "jump" <> " " <> jump_args) do
+    # TODO: noop
+    [_x, _y, _z, _speed, _yaw, _first_mission_pad_id, _second_mission_pad_id] =
+      jump_args
+      |> String.split(" ", parts: 7, trim: false)
+
+    {:ok, state}
+  end
+
   # private functions
 
   defp set(state, key, value) do

@@ -225,4 +225,14 @@ defmodule Tello.CyberTello.Processor.ControlUnitTest do
       # TODO: noop
     end
   end
+
+  describe "jump" do
+    test "it should jump" do
+      state = %State{}
+
+      {:ok, new_state} = ControlUnit.process_command(state, "jump 0 300 0 10 15 m1 m3")
+
+      # TODO: noop
+    end
+  end
 end
