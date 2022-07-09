@@ -245,4 +245,15 @@ defmodule Tello.CyberTello.Processor.ControlUnitTest do
       assert 33 == new_state.speed
     end
   end
+
+  describe "mission pad toggle" do
+    test "it should turn on mission pad detection" do
+      state = %State{}
+
+      {:ok, new_state} = ControlUnit.process_command(state, "mon")
+
+      assert new_state.mission_pad
+      assert -1 == new_state.mission_pad.id
+    end
+  end
 end

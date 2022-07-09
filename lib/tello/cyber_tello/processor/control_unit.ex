@@ -177,6 +177,14 @@ defmodule Tello.CyberTello.Processor.ControlUnit do
     {:ok, new_state}
   end
 
+  def process_command(state, "mon") do
+    new_state =
+      state
+      |> set(:mission_pad, %State.MissionPad{})
+
+    {:ok, new_state}
+  end
+
   # private functions
 
   defp set(state, key, value) do

@@ -15,8 +15,8 @@ defmodule Tello.CyberTello.State.MissionPad do
           z: integer()
         }
 
-  defstruct id: nil,
-            x: nil,
-            y: nil,
-            z: nil
+  defstruct id: -1,
+            x: 0,
+            y: 0,
+            z: 0
 end
