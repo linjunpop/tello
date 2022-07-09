@@ -235,4 +235,14 @@ defmodule Tello.CyberTello.Processor.ControlUnitTest do
       # TODO: noop
     end
   end
+
+  describe "speed" do
+    test "it should set the speed" do
+      state = %State{}
+
+      {:ok, new_state} = ControlUnit.process_command(state, "speed 33")
+
+      assert 33 == new_state.speed
+    end
+  end
 end

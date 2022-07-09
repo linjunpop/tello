@@ -169,6 +169,14 @@ defmodule Tello.CyberTello.Processor.ControlUnit do
     {:ok, state}
   end
 
+  def process_command(state, "speed" <> " " <> speed) do
+    new_state =
+      state
+      |> set(:speed, String.to_integer(speed))
+
+    {:ok, new_state}
+  end
+
   # private functions
 
   defp set(state, key, value) do
