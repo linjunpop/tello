@@ -308,4 +308,30 @@ defmodule Tello.CyberTello.Processor.ControlUnitTest do
       # noop
     end
   end
+
+  describe "wifi" do
+    test "it should set Wi-Fi SSID and password" do
+      state = %State{}
+
+      command = "wifi tello-2 664455"
+
+      {:ok, new_state} = ControlUnit.process_command(state, command)
+
+      assert :access_point == new_state.wifi.mode
+      assert "tello-2" == new_state.wifi.ssid
+      assert "664455" == new_state.wifi.password
+    end
+
+    test "it should set Wi-Fi to Client mode and set SSID and password" do
+      state = %State{}
+
+      command = "ap myrouter 7755"
+
+      {:ok, new_state} = ControlUnit.process_command(state, command)
+
+      assert :client == new_state.wifi.mode
+      assert "myrouter" == new_state.wifi.ssid
+      assert "7755" == new_state.wifi.password
+    end
+  end
 end

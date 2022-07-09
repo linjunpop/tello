@@ -9,7 +9,7 @@ defmodule Tello.CyberTello.State do
   - `Tello.CyberTello.State.Temperature`
   """
 
-  alias Tello.CyberTello.State.{MissionPad, Speed, Temperature, Acceleration}
+  alias Tello.CyberTello.State.{MissionPad, Speed, Temperature, Acceleration, Wifi}
 
   @type t :: %__MODULE__{
           sdk_mode?: boolean(),
@@ -17,7 +17,7 @@ defmodule Tello.CyberTello.State do
           speed: Speed.t(),
           battery: float(),
           takeoff_at: NaiveDateTime.t(),
-          wifi_snr: float(),
+          wifi: Wifi.t(),
           sdk_version: binary(),
           serial_number: binary(),
           pitch: integer(),
@@ -35,7 +35,7 @@ defmodule Tello.CyberTello.State do
             mission_pad: nil,
             battery: 0.9,
             takeoff_at: nil,
-            wifi_snr: 0.3,
+            wifi: %Wifi{},
             sdk_version: "2.0",
             serial_number: "virtual-tello",
             pitch: 0,

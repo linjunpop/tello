@@ -226,6 +226,38 @@ defmodule Tello.CyberTello.Processor.ControlUnit do
     {:ok, state}
   end
 
+  def process_command(%State{wifi: wifi} = state, "wifi" <> " " <> wifi_args) do
+    [ssid, password] =
+      wifi_args
+      |> String.split(" ")
+
+    wifi =
+      wifi
+      |> struct(ssid: ssid, password: password)
+
+    new_state =
+      state
+      |> set(:wifi, wifi)
+
+    {:ok, new_state}
+  end
+
+  def process_command(%State{wifi: wifi} = state, "ap" <> " " <> wifi_args) do
+    [ssid, password] =
+      wifi_args
+      |> String.split(" ")
+
+    wifi =
+      wifi
+      |> struct(mode: :client, ssid: ssid, password: password)
+
+    new_state =
+      state
+      |> set(:wifi, wifi)
+
+    {:ok, new_state}
+  end
+
   # private functions
 
   defp set(state, key, value) do
