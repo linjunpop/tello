@@ -255,5 +255,13 @@ defmodule Tello.CyberTello.Processor.ControlUnitTest do
       assert new_state.mission_pad
       assert -1 == new_state.mission_pad.id
     end
+
+    test "it should turn off mission pad detection" do
+      state = %State{}
+
+      {:ok, new_state} = ControlUnit.process_command(state, "moff")
+
+      assert nil == new_state.mission_pad
+    end
   end
 end
