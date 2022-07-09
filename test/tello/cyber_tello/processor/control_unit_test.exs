@@ -198,5 +198,31 @@ defmodule Tello.CyberTello.Processor.ControlUnitTest do
 
       # TODO: noop
     end
+
+    test "it should go to coordinate on mission pad" do
+      state = %State{}
+
+      {:ok, new_state} = ControlUnit.process_command(state, "go 0 300 0 10 m1")
+
+      # TODO: noop
+    end
+  end
+
+  describe "curve" do
+    test "it should fly a curve" do
+      state = %State{}
+
+      {:ok, new_state} = ControlUnit.process_command(state, "curve 0 300 0 10 -200 -50 10")
+
+      # TODO: noop
+    end
+
+    test "it should fly a curve on mission pad" do
+      state = %State{}
+
+      {:ok, new_state} = ControlUnit.process_command(state, "curve 0 300 0 10 -200 -50 10 m1")
+
+      # TODO: noop
+    end
   end
 end

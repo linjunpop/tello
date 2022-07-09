@@ -137,10 +137,23 @@ defmodule Tello.CyberTello.Processor.ControlUnit do
   def process_command(state, "go" <> " " <> go_args) do
     # TODO: noop
     case String.split(go_args, " ", parts: 5, trim: false) do
-      [_x, _y, _z, _speed, _mission_pad_i] ->
+      [_x, _y, _z, _speed, _mission_pad_id] ->
         nil
 
       [_x, _y, _z, _speed] ->
+        nil
+    end
+
+    {:ok, state}
+  end
+
+  def process_command(state, "curve" <> " " <> curve_args) do
+    # TODO: noop
+    case String.split(curve_args, " ", parts: 8, trim: false) do
+      [_x1, _y1, _z1, _x2, _y2, _z2, _speed, _mission_pad_id] ->
+        nil
+
+      [_x1, _y1, _z1, _x2, _y2, _z2, _speed] ->
         nil
     end
 
