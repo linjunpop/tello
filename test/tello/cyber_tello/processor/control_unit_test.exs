@@ -246,7 +246,7 @@ defmodule Tello.CyberTello.Processor.ControlUnitTest do
     end
   end
 
-  describe "mission pad toggle" do
+  describe "mission pad" do
     test "it should turn on mission pad detection" do
       state = %State{}
 
@@ -262,6 +262,38 @@ defmodule Tello.CyberTello.Processor.ControlUnitTest do
       {:ok, new_state} = ControlUnit.process_command(state, "moff")
 
       assert nil == new_state.mission_pad
+    end
+
+    test "it should set mission pad detection mode to `downward`" do
+      state = %State{mission_pad: %State.MissionPad{}}
+
+      {:ok, new_state} = ControlUnit.process_command(state, "mdirection 0")
+
+      assert :downward == new_state.mission_pad.detection_mode
+    end
+
+    test "it should set mission pad detection mode to `forward`" do
+      state = %State{mission_pad: %State.MissionPad{}}
+
+      {:ok, new_state} = ControlUnit.process_command(state, "mdirection 1")
+
+      assert :forward == new_state.mission_pad.detection_mode
+    end
+
+    test "it should set mission pad detection mode to both `downward` and `forward`" do
+      state = %State{mission_pad: %State.MissionPad{}}
+
+      {:ok, new_state} = ControlUnit.process_command(state, "mdirection 2")
+
+      assert :both == new_state.mission_pad.detection_mode
+    end
+
+    test "it should error when mission pad detection is off and trying to change the detection mode" do
+      state = %State{mission_pad: nil}
+
+      {:error, message} = ControlUnit.process_command(state, "mdirection 2")
+
+      assert "Please enable Mission Pad detection first" == message
     end
   end
 end

@@ -193,6 +193,35 @@ defmodule Tello.CyberTello.Processor.ControlUnit do
     {:ok, new_state}
   end
 
+  def process_command(
+        %State{mission_pad: nil} = _state,
+        "mdirection" <> " " <> _detection_mode_code
+      ) do
+    {:error, "Please enable Mission Pad detection first"}
+  end
+
+  def process_command(
+        %State{mission_pad: mission_pad} = state,
+        "mdirection" <> " " <> detection_mode_code
+      ) do
+    detection_mode =
+      case String.to_integer(detection_mode_code) do
+        0 -> :downward
+        1 -> :forward
+        2 -> :both
+      end
+
+    mission_pad =
+      mission_pad
+      |> struct(detection_mode: detection_mode)
+
+    new_state =
+      state
+      |> set(:mission_pad, mission_pad)
+
+    {:ok, new_state}
+  end
+
   # private functions
 
   defp set(state, key, value) do
