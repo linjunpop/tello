@@ -334,4 +334,58 @@ defmodule Tello.CyberTello.Processor.ControlUnitTest do
       assert "7755" == new_state.wifi.password
     end
   end
+
+  describe "fetch" do
+    test "it should read speed" do
+      state = %State{speed: %State.Speed{x: 50, y: 0, z: 0}}
+
+      {:ok, speed} = ControlUnit.fetch(state, "speed?")
+
+      assert 50 == speed
+    end
+
+    test "it should read battery" do
+      state = %State{battery: 0.5}
+
+      {:ok, battery} = ControlUnit.fetch(state, "battery?")
+
+      assert 0.5 == battery
+    end
+
+    test "it should read time" do
+      takeoff_time =
+        NaiveDateTime.utc_now()
+        |> NaiveDateTime.add(60, :second)
+
+      state = %State{takeoff_at: takeoff_time}
+
+      {:ok, time} = ControlUnit.fetch(state, "time?")
+
+      assert time > 50000
+    end
+
+    test "it should read wifi SNR" do
+      state = %State{wifi: %State.Wifi{snr: 0.7}}
+
+      {:ok, wifi_snr} = ControlUnit.fetch(state, "wifi?")
+
+      assert 0.7 == wifi_snr
+    end
+
+    test "it should read SDK version" do
+      state = %State{sdk_version: "2.0"}
+
+      {:ok, sdk_version} = ControlUnit.fetch(state, "sdk?")
+
+      assert "2.0" == sdk_version
+    end
+
+    test "it should read serial number" do
+      state = %State{serial_number: "xxxxx-yyyyy-uuuuu"}
+
+      {:ok, serial_number} = ControlUnit.fetch(state, "sn?")
+
+      assert "xxxxx-yyyyy-uuuuu" == serial_number
+    end
+  end
 end

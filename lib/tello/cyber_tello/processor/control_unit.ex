@@ -258,6 +258,36 @@ defmodule Tello.CyberTello.Processor.ControlUnit do
     {:ok, new_state}
   end
 
+  def fetch(%State{speed: %State.Speed{x: x}} = _state, "speed?") do
+    {:ok, x}
+  end
+
+  def fetch(%State{battery: battery} = _state, "battery?") do
+    {:ok, battery}
+  end
+
+  def fetch(%State{takeoff_at: nil} = _state, "time?"), do: {:ok, 0}
+
+  def fetch(%State{takeoff_at: takeoff_at} = _state, "time?") do
+    diff =
+      takeoff_at
+      |> NaiveDateTime.diff(NaiveDateTime.utc_now(), :millisecond)
+
+    {:ok, diff}
+  end
+
+  def fetch(%State{wifi: %State.Wifi{snr: wifi_snr}} = _state, "wifi?") do
+    {:ok, wifi_snr}
+  end
+
+  def fetch(%State{sdk_version: sdk_version} = _state, "sdk?") do
+    {:ok, sdk_version}
+  end
+
+  def fetch(%State{serial_number: serial_number} = _state, "sn?") do
+    {:ok, serial_number}
+  end
+
   # private functions
 
   defp set(state, key, value) do

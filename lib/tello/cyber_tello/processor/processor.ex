@@ -20,10 +20,34 @@ defmodule Tello.CyberTello.Processor do
   def process_command(command, from) do
     current_state = Memory.get()
 
-    case ControlUnit.process_command(current_state, command) do
+    if String.ends_with?(command, "?") do
+      read(current_state, command, from)
+    else
+      handle_control_command(current_state, command, from)
+    end
+  end
+
+  defp handle_control_command(state, command, from) do
+    case ControlUnit.process_command(state, command) do
       {:ok, %State{} = new_state} ->
         Memory.set(new_state)
         Gateway.reply("ok", from)
+
+        :ok
+
+      {:error, err} ->
+        Logger.error(inspect(err))
+
+        Gateway.reply("error #{inspect(err)}", from)
+
+        {:error, err}
+    end
+  end
+
+  defp read(state, command, from) do
+    case ControlUnit.fetch(state, command) do
+      {:ok, value} ->
+        Gateway.reply(value, from)
 
         :ok
 
