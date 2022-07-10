@@ -2,25 +2,51 @@
 
 ```elixir
 Mix.install([
-  {:tello, "~> 0.1"}
+  :tello
 ])
 ```
 
 ## Cyber Tello
 
-Start And connect to the Cyber Tello
+Start the Cyber Tello
 
 ```elixir
 Tello.CyberTello.start_link([])
 
 {:ok, tello_server_port} = Tello.CyberTello.port()
-
-{:ok, supervisor, client, status_listener} =
-  Tello.start(client: [ip: {127, 0, 0, 1}, port: tello_server_port])
 ```
 
-Control Tello
+Define a module `MyReceiver` which implements `Tello.Client.Receiver` to receive messages from Tello.
+
+```elixir
+defmodule MyReceiver do
+  require Logger
+  use Tello.Client.Receiver
+
+  def receive_message(data) do
+    Logger.info("receives message from Tello: #{data}")
+  end
+end
+```
+
+Start Tello client
+
+```elixir
+args = [
+  client: [ip: {127, 0, 0, 1}, port: tello_server_port, receiver: MyReceiver]
+]
+
+{:ok, supervisor, client, status_listener} = Tello.start(args)
+```
+
+Enable Tello's SDK mode
 
 ```elixir
 Tello.Command.enable(client)
+```
+
+Get SDK version
+
+```elixir
+Tello.Command.get_sdk_version(client)
 ```

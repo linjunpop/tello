@@ -79,17 +79,18 @@ defmodule Tello do
   - `Tello.CyberTello`
   """
 
-  alias Tello.Client.Manager
-
-  @default_arg [
-    client: [ip: {192, 168, 10, 1}, port: 8889],
-    status_listener: [port: 8890]
-  ]
+  alias Tello.Client.{Manager, Receiver}
 
   @type init_arg :: [
-          client: [ip: :inet.ip_address(), port: :inet.port_number()],
-          status_listener: [port: :inet.port_number()] | nil
+          client: [ip: :inet.ip_address(), port: :inet.port_number(), receiver: nil],
+          status_listener: [port: :inet.port_number()] | nil,
+          receiver: Receiver.t()
         ]
+
+  @default_arg [
+    client: [ip: {192, 168, 10, 1}, port: 8889, receiver: nil],
+    status_listener: [port: 8890]
+  ]
 
   @spec start(init_arg) :: {:ok, supervisor :: pid, client :: pid, status_listener :: nil | pid}
   @doc """
