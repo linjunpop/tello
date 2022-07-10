@@ -13,14 +13,7 @@ defmodule Tello.MixProject do
       deps: deps(),
       name: "Tello",
       source_url: "https://github.com/linjunpop/tello",
-      docs: [
-        main: "Tello",
-        groups_for_modules: [
-          Client: ~r/Tello.Client/,
-          "Cyber Tello": ~r/Tello.CyberTello/
-        ],
-        before_closing_body_tag: &before_closing_body_tag/1
-      ]
+      docs: docs()
     ]
   end
 
@@ -34,7 +27,7 @@ defmodule Tello.MixProject do
   defp deps do
     [
       {:dialyxir, "~> 1.1", only: [:dev], runtime: false},
-      {:ex_doc, "~> 0.27", only: :dev, runtime: false}
+      {:ex_doc, "~> 0.28", only: :dev, runtime: false}
     ]
   end
 
@@ -47,6 +40,20 @@ defmodule Tello.MixProject do
       files: ~w(lib .formatter.exs mix.exs README* LICENSE* CHANGELOG*),
       licenses: ["MIT"],
       links: %{"GitHub" => "https://github.com/linjunpop/tello"}
+    ]
+  end
+
+  def docs do
+    [
+      main: "Tello",
+      groups_for_modules: [
+        Client: ~r/Tello.Client/,
+        "Cyber Tello": ~r/Tello.CyberTello/
+      ],
+      before_closing_body_tag: &before_closing_body_tag/1,
+      extras: [
+        "LAB.livemd"
+      ]
     ]
   end
 

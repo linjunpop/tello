@@ -1,0 +1,26 @@
+# Tello Lab
+
+```elixir
+Mix.install([
+  {:tello, "~> 0.1"}
+])
+```
+
+## Cyber Tello
+
+Start And connect to the Cyber Tello
+
+```elixir
+Tello.CyberTello.start_link([])
+
+{:ok, tello_server_port} = Tello.CyberTello.port()
+
+{:ok, supervisor, client, status_listener} =
+  Tello.start(client: [ip: {127, 0, 0, 1}, port: tello_server_port])
+```
+
+Control Tello
+
+```elixir
+Tello.Command.enable(client)
+```
