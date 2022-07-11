@@ -24,7 +24,7 @@ defmodule Tello.Client.StatusListener.Status do
           height: integer(),
           barometer: float(),
           acceleration: Acceleration.t(),
-          raw: String.t()
+          _raw: String.t()
         }
 
   defstruct mission_pad: nil,
@@ -39,5 +39,5 @@ defmodule Tello.Client.StatusListener.Status do
             height: 0,
             barometer: nil,
             acceleration: %Acceleration{},
-            raw: ""
+            _raw: ""
 end

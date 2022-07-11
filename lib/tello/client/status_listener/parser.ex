@@ -36,7 +36,7 @@ defmodule Tello.Client.StatusListener.Parser do
       barometer: get_float_value(status_data, "baro"),
       time: get_integer_value(status_data, "time"),
       acceleration: build_acceleration(status_data),
-      raw: String.trim(status_str)
+      _raw: String.trim(status_str)
     }
   end
 
