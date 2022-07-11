@@ -15,7 +15,7 @@ defmodule Tello.CyberTello.State do
           sdk_mode?: boolean(),
           mission_pad: MissionPad.t() | nil,
           speed: Speed.t(),
-          battery: float(),
+          battery: integer(),
           takeoff_at: NaiveDateTime.t(),
           wifi: Wifi.t(),
           sdk_version: binary(),

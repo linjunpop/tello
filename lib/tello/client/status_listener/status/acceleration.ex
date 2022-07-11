@@ -1,6 +1,7 @@
-defmodule Tello.CyberTello.State.Acceleration do
+defmodule Tello.Client.StatusListener.Status.Acceleration do
   @moduledoc """
-  A sub-struct of `Tello.CyberTello.State` to represent the acceleration information.
+  A sub-struct of `Tello.Client.StatusListener.Status`
+  to represent the acceleration information.
 
   - `x`: Acceleration on x-axis
   - `y`: Acceleration on y-axis
@@ -13,7 +14,7 @@ defmodule Tello.CyberTello.State.Acceleration do
           z: float()
         }
 
-  defstruct x: nil,
-            y: nil,
-            z: nil
+  defstruct x: 0,
+            y: 0,
+            z: 0
 end
