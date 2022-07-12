@@ -12,7 +12,7 @@ defmodule Receiver do
   end
 end
 
-{:ok, supervisor, controller, status_listener} =
+{:ok, client, controller, status_listener} =
    Tello.start(
       controller: [ip: {127, 0, 0, 1}, port: tello_server_port, receiver: Receiver]
     )

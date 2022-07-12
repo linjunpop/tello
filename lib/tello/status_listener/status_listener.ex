@@ -8,6 +8,7 @@ defmodule Tello.StatusListener do
 
   alias Tello.StatusListener.{Parser, Handler}
 
+  @type t :: module()
   @type init_arg :: [
           port: :inet.port_number(),
           handler: Handler.t() | nil
@@ -42,7 +43,14 @@ defmodule Tello.StatusListener do
   def handle_info({:udp, _socket, _ip, _port, data}, %{handler: handler} = state) do
     status = Parser.parse(data)
 
-    handler.handle_message(status)
+    if function_exported?(handler, :handle_status, 1) do
+      handler.handle_status(status)
+    else
+      Logger.warn(
+        "Please implement `handle_status/1` for the custom `Tello.StatusListener.Handler` handler."
+      )
+    end
+
     {:noreply, state}
   end
 end

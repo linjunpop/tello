@@ -8,6 +8,15 @@ defmodule Tello.Client do
   alias Tello.Controller
   alias Tello.StatusListener
 
+  @type init_arg :: [
+          controller: Controller.init_arg(),
+          status_listener: StatusListener.init_arg()
+        ]
+
+  @doc """
+  Start a client
+  """
+  @spec start_link([], init_arg()) :: :ignore | {:error, any} | {:ok, pid}
   def start_link([], init_arg) do
     uid =
       :erlang.make_ref()
@@ -19,6 +28,7 @@ defmodule Tello.Client do
     )
   end
 
+  @doc false
   def init(uid: uid, init_arg: init_arg) do
     controller_arg = Keyword.get(init_arg, :controller)
 
@@ -38,24 +48,13 @@ defmodule Tello.Client do
     Supervisor.init(children, strategy: :one_for_one)
   end
 
-  @spec pid_for(pid, :controller | :status_listener) :: pid | nil
-  def pid_for(supervisor, :controller) do
+  @doc false
+  @spec pid_for(pid, Controller.t() | StatusListener.t()) :: pid | nil
+  def pid_for(supervisor, module) do
     supervisor
     |> Supervisor.which_children()
     |> Enum.find_value(fn
-      {Controller, pid, :worker, _arg} ->
-        pid
-
-      _other ->
-        nil
-    end)
-  end
-
-  def pid_for(supervisor, :status_listener) do
-    supervisor
-    |> Supervisor.which_children()
-    |> Enum.find_value(fn
-      {Tello.StatusListener, pid, :worker, _arg} ->
+      {^module, pid, :worker, _arg} ->
         pid
 
       _other ->
