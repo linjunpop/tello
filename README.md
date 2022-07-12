@@ -15,7 +15,7 @@ by adding `tello` to your list of dependencies in `mix.exs`:
 ```elixir
 def deps do
   [
-    {:tello, "~> 0.1.0"}
+    {:tello, "~> 0.2.0"}
   ]
 end
 ```
