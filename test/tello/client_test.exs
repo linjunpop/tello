@@ -1,6 +1,6 @@
-defmodule Tello.ClientTest do
+defmodule Tello.ControllerTest do
   use ExUnit.Case
-  alias Tello.Client
+  alias Tello.Controller
 
-  doctest Client
+  doctest Controller
 end

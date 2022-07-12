@@ -16,12 +16,12 @@ Tello.CyberTello.start_link([])
 {:ok, tello_server_port} = Tello.CyberTello.port()
 ```
 
-Define a module `MyReceiver` which implements `Tello.Client.Receiver` to receive messages from Tello.
+Define a module `MyReceiver` which implements `Tello.Controller.Receiver` to receive messages from Tello.
 
 ```elixir
 defmodule MyReceiver do
   require Logger
-  use Tello.Client.Receiver
+  use Tello.Controller.Receiver
 
   def receive_message(data) do
     Logger.info("receives message from Tello: #{data}")
@@ -42,11 +42,11 @@ args = [
 Enable Tello's SDK mode
 
 ```elixir
-Tello.Command.enable(client)
+Tello.Controller.enable(client)
 ```
 
 Get SDK version
 
 ```elixir
-Tello.Command.get_sdk_version(client)
+Tello.Controller.get_sdk_version(client)
 ```

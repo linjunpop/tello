@@ -13,7 +13,7 @@ defmodule Tello.CyberTello do
   ```mermaid
   flowchart TD
     subgraph Client
-      Tello.Client((Tello.Client))
+      Tello.Controller((Tello.Controller))
     end
 
     subgraph CyberTello
@@ -29,10 +29,10 @@ defmodule Tello.CyberTello do
 
       Memory -->|Save State| Processor
 
-      Tello.Client -->|Send command| Gateway
+      Tello.Controller -->|Send command| Gateway
 
       Gateway -->|Pass command| Processor
-      Gateway -->|Reply| Tello.Client
+      Gateway -->|Reply| Tello.Controller
 
       Processor -->|Read State| Memory
     end
@@ -47,11 +47,11 @@ defmodule Tello.CyberTello do
   # Get the UDP port which CyberTello receive messages
   {:ok, cyber_tello_port} = Tello.CyberTello.port()
 
-  # Then you can initial a `Tello.Client` connects to `Tello.CyberTello`
+  # Then you can initial a `Tello.Controller` connects to `Tello.CyberTello`
   {:ok, tello_client} = Tello.start_client({{127, 0, 0, 1}, cyber_tello_port})
 
   # Send commands to `Tello.CyberTello`
-  Tello.Command.command(tello_client)
+  Tello.Controller.command(tello_client)
   ```
   """
 

@@ -1,4 +1,4 @@
-defmodule Tello.Client.StatusListener do
+defmodule Tello.StatusListener do
   @moduledoc """
   Receives status update messages from Tello.
   """
@@ -6,10 +6,16 @@ defmodule Tello.Client.StatusListener do
   use GenServer
   require Logger
 
-  alias Tello.Client.StatusListener.Parser
+  alias Tello.StatusListener.{Parser, Handler}
+
+  @type init_arg :: [
+          port: :inet.port_number(),
+          handler: Handler.t() | nil
+        ]
 
   # Server (callbacks)
 
+  @spec start_link(uid: reference(), arg: init_arg()) :: :ignore | {:error, any} | {:ok, pid}
   def start_link(uid: uid, arg: arg) do
     GenServer.start_link(__MODULE__, arg, name: :"#{__MODULE__}.#{uid}")
   end

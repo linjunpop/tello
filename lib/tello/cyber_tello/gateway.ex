@@ -2,7 +2,7 @@ defmodule Tello.CyberTello.Gateway do
   @moduledoc """
   Network Gateway for `Tello.CyberTello`.
 
-  Opens up the UDP server to receive commands from `Tello.Client`
+  Opens up the UDP server to receive commands from `Tello.Controller`
   and reply message too.
   """
 
@@ -52,7 +52,7 @@ defmodule Tello.CyberTello.Gateway do
   # Client
 
   @doc """
-  Reply message to `Tello.Client`
+  Reply message to `Tello.Controller`
   """
   @spec reply(String.t(), {:inet.ip_address(), :inet.port_number()}) :: :ok | {:error, any()}
   def reply(message, from) do

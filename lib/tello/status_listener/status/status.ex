@@ -1,15 +1,15 @@
-defmodule Tello.Client.StatusListener.Status do
+defmodule Tello.StatusListener.Status do
   @moduledoc """
   Tello's status update message.
 
   ## See also
-  - `Tello.Client.StatusListener.Status.Acceleration`
-  - `Tello.Client.StatusListener.Status.MissionPad`
-  - `Tello.Client.StatusListener.Status.Speed`
-  - `Tello.Client.StatusListener.Status.Temperature`
+  - `Tello.StatusListener.Status.Acceleration`
+  - `Tello.StatusListener.Status.MissionPad`
+  - `Tello.StatusListener.Status.Speed`
+  - `Tello.StatusListener.Status.Temperature`
   """
 
-  alias Tello.Client.StatusListener.Status.{MissionPad, Speed, Temperature, Acceleration}
+  alias Tello.StatusListener.Status.{MissionPad, Speed, Temperature, Acceleration}
 
   @type t :: %__MODULE__{
           mission_pad: MissionPad.t() | nil,

@@ -1,6 +1,6 @@
-defmodule Tello.Client.StatusListener.Status.Speed do
+defmodule Tello.StatusListener.Status.Speed do
   @moduledoc """
-  A sub-struct of `Tello.Client.StatusListener.Status`
+  A sub-struct of `Tello.StatusListener.Status`
   to represent the speed information.
 
   - `x`: Speed on x-axis

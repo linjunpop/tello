@@ -1,6 +1,6 @@
 defmodule Tello.CyberTello.Processor do
   @moduledoc """
-  Process the commands receives from `Tello.Client`.
+  Process the commands receives from `Tello.Controller`.
   """
 
   require Logger

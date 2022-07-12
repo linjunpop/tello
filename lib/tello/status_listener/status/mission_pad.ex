@@ -1,6 +1,6 @@
-defmodule Tello.Client.StatusListener.Status.MissionPad do
+defmodule Tello.StatusListener.Status.MissionPad do
   @moduledoc """
-  A sub-struct of `Tello.Client.StatusListener.Status`
+  A sub-struct of `Tello.StatusListener.Status`
   to represent the detected Mission Pad.
 
   - `id` - Mission Pad ID

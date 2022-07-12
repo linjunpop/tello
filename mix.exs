@@ -27,8 +27,7 @@ defmodule Tello.MixProject do
   defp deps do
     [
       {:dialyxir, "~> 1.1", only: [:dev], runtime: false},
-      {:ex_doc, "~> 0.28", only: :dev, runtime: false},
-      {:nimble_parsec, "~> 1.0"}
+      {:ex_doc, "~> 0.28", only: :dev, runtime: false}
     ]
   end
 
@@ -48,12 +47,14 @@ defmodule Tello.MixProject do
     [
       main: "Tello",
       groups_for_modules: [
-        Client: ~r/Tello.Client/,
+        Controller: ~r/Tello.Controller/,
+        "Status Listener": ~r/Tello.StatusListener/,
         "Cyber Tello": ~r/Tello.CyberTello/
       ],
       before_closing_body_tag: &before_closing_body_tag/1,
       extras: [
-        "LAB.livemd"
+        "docs/architecture.md",
+        "docs/lab.livemd"
       ]
     ]
   end

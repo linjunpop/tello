@@ -1,7 +1,7 @@
-defmodule Tello.Client.StatusListener.ParserTest do
+defmodule Tello.StatusListener.ParserTest do
   use ExUnit.Case
 
-  alias Tello.Client.StatusListener.{Parser, Status}
+  alias Tello.StatusListener.{Parser, Status}
 
   describe "parse/1" do
     test "it should parse status update message" do

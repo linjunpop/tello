@@ -8,7 +8,7 @@ defmodule Tello.Application do
   @impl true
   def start(_type, _args) do
     children = [
-      {Tello.Client.Manager, []}
+      {Tello.Manager, []}
     ]
 
     # See https://hexdocs.pm/elixir/Supervisor.html

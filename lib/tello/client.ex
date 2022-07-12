@@ -1,12 +1,12 @@
-defmodule Tello.Client.Supervisor do
+defmodule Tello.Client do
   @moduledoc """
-  The supervisor for Tello Client.
+  The Tello Client as a supervisor.
   """
 
   use Supervisor
 
-  alias Tello.Client
-  alias Tello.Client.StatusListener
+  alias Tello.Controller
+  alias Tello.StatusListener
 
   def start_link([], init_arg) do
     uid =
@@ -20,10 +20,10 @@ defmodule Tello.Client.Supervisor do
   end
 
   def init(uid: uid, init_arg: init_arg) do
-    client_arg = Keyword.get(init_arg, :client)
+    controller_arg = Keyword.get(init_arg, :controller)
 
     children = [
-      {Client, [uid: uid, arg: client_arg]}
+      {Controller, [uid: uid, arg: controller_arg]}
     ]
 
     children =
@@ -38,12 +38,12 @@ defmodule Tello.Client.Supervisor do
     Supervisor.init(children, strategy: :one_for_one)
   end
 
-  @spec pid_for(pid, :client | :status_listener) :: pid | nil
-  def pid_for(supervisor, :client) do
+  @spec pid_for(pid, :controller | :status_listener) :: pid | nil
+  def pid_for(supervisor, :controller) do
     supervisor
     |> Supervisor.which_children()
     |> Enum.find_value(fn
-      {Tello.Client, pid, :worker, _arg} ->
+      {Controller, pid, :worker, _arg} ->
         pid
 
       _other ->
@@ -55,7 +55,7 @@ defmodule Tello.Client.Supervisor do
     supervisor
     |> Supervisor.which_children()
     |> Enum.find_value(fn
-      {Tello.Client.StatusListener, pid, :worker, _arg} ->
+      {Tello.StatusListener, pid, :worker, _arg} ->
         pid
 
       _other ->

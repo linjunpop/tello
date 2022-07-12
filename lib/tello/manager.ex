@@ -1,4 +1,4 @@
-defmodule Tello.Client.Manager do
+defmodule Tello.Manager do
   use DynamicSupervisor
 
   def start_link(init_arg) do

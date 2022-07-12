@@ -1,6 +1,6 @@
-defmodule Tello.Command.BuilderTest do
+defmodule Tello.Controller.CommandBuilderTest do
   use ExUnit.Case
-  alias Tello.Client.Command.Builder
+  alias Tello.Controller.CommandBuilder, as: Builder
 
   describe "#control" do
     test "It should build command `command`" do

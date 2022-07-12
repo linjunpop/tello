@@ -1,6 +1,6 @@
-defmodule Tello.Client.StatusListener.Status.Temperature do
+defmodule Tello.StatusListener.Status.Temperature do
   @moduledoc """
-  A sub-struct of `Tello.Client.StatusListener.Status`
+  A sub-struct of `Tello.StatusListener.Status`
   to represent the temperature of board.
 
   - `low`: Lowest temperature of the board

@@ -1,13 +1,13 @@
-defmodule Tello.Client.StatusListener.Parser do
+defmodule Tello.StatusListener.Parser do
   @moduledoc """
   Parser to parse the status information returned from server
   """
 
-  alias Tello.Client.StatusListener.Status
+  alias Tello.StatusListener.Status
 
   @doc """
   Parse the status update message,
-  returns the `Tello.Client.StatusListener.Status` struct.
+  returns the `Tello.StatusListener.Status` struct.
   """
   @spec parse(String.t()) :: Status.t()
   def parse(status_str) do
