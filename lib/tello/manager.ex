@@ -12,4 +12,15 @@ defmodule Tello.Manager do
       extra_arguments: [init_arg]
     )
   end
+
+  @doc """
+  Returns the Client PIDs
+  """
+  @spec client_pids :: [pid()]
+  def client_pids() do
+    DynamicSupervisor.which_children(__MODULE__)
+    |> Enum.map(fn {:undefined, pid, :supervisor, [Tello.Client]} ->
+      pid
+    end)
+  end
 end

@@ -2,6 +2,8 @@
 
 ## main
 
+- Added `Tello.Manger.client_pids/1` to fetch the running `Tello.Client` PIDs.
+
 ## v0.2.0
 
 - Rename `Tello.Command` to `Tello.Controller`.
