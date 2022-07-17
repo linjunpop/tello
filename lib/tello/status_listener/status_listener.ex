@@ -43,13 +43,7 @@ defmodule Tello.StatusListener do
   def handle_info({:udp, _socket, _ip, _port, data}, %{handler: handler} = state) do
     status = Parser.parse(data)
 
-    if function_exported?(handler, :handle_status, 1) do
-      handler.handle_status(status)
-    else
-      Logger.warn(
-        "Please implement `handle_status/1` for the custom `Tello.StatusListener.Handler` handler."
-      )
-    end
+    Handler.handle_data(handler, status)
 
     {:noreply, state}
   end

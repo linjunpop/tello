@@ -20,12 +20,27 @@ defmodule Tello.Controller.Receiver do
   ```
   """
 
+  require Logger
+
   @type t :: module()
-  @callback receive_message(data :: binary()) :: none()
+  @callback receive_message(data :: binary()) :: any()
 
   defmacro __using__(_) do
     quote do
       @behaviour Tello.Controller.Receiver
+    end
+  end
+
+  @spec receive_message(t(), binary()) :: any
+  def receive_message(receiver_module, data) do
+    Code.ensure_loaded(receiver_module)
+
+    if function_exported?(receiver_module, :receive_message, 1) do
+      receiver_module.receive_message(data)
+    else
+      Logger.warn(
+        "Please implement `receive_message/1` for the custom `Tello.Controller.Receiver` handler."
+      )
     end
   end
 end

@@ -8,7 +8,7 @@ defmodule Tello.Controller do
   use GenServer
   require Logger
 
-  alias Tello.Controller.{State, CommandBuilder}
+  alias Tello.Controller.{State, CommandBuilder, Receiver}
 
   @type t :: module()
   @type init_arg :: [
@@ -73,13 +73,7 @@ defmodule Tello.Controller do
         {:udp, _socket, _ip, _port, data},
         %State{receiver_module: receiver_module} = state
       ) do
-    if function_exported?(receiver_module, :receive_message, 1) do
-      receiver_module.receive_message(data)
-    else
-      Logger.warn(
-        "Please implement `receive_message/1` for the custom `Tello.Controller.Receiver` handler."
-      )
-    end
+    Receiver.receive_message(receiver_module, data)
 
     {:noreply, state}
   end

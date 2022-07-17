@@ -20,6 +20,8 @@ defmodule Tello.StatusListener.Handler do
       )
   ```
   """
+  require Logger
+
   alias Tello.StatusListener.Status
 
   @type t :: module()
@@ -28,6 +30,19 @@ defmodule Tello.StatusListener.Handler do
   defmacro __using__(_) do
     quote do
       @behaviour Tello.StatusListener.Status
+    end
+  end
+
+  @spec handle_data(t(), Status.t()) :: any
+  def handle_data(handler_module, status) do
+    Code.ensure_loaded(handler_module)
+
+    if function_exported?(handler_module, :handle_status, 1) do
+      handler_module.handle_status(status)
+    else
+      Logger.warn(
+        "Please implement `handle_status/1` for the custom `Tello.StatusListener.Handler` handler."
+      )
     end
   end
 end
