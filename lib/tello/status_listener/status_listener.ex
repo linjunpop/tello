@@ -16,7 +16,7 @@ defmodule Tello.StatusListener do
 
   # Server (callbacks)
 
-  @spec start_link(uid: reference(), arg: init_arg()) :: :ignore | {:error, any} | {:ok, pid}
+  @spec start_link(uid: integer(), arg: init_arg()) :: :ignore | {:error, any} | {:ok, pid}
   def start_link(uid: uid, arg: arg) do
     GenServer.start_link(__MODULE__, arg, name: :"#{__MODULE__}.#{uid}")
   end

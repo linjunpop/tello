@@ -18,10 +18,7 @@ defmodule Tello.Client do
   """
   @spec start_link([], init_arg()) :: :ignore | {:error, any} | {:ok, pid}
   def start_link([], init_arg) do
-    uid =
-      :erlang.make_ref()
-      |> :erlang.ref_to_list()
-      |> List.to_string()
+    uid = System.unique_integer()
 
     Supervisor.start_link(__MODULE__, [uid: uid, init_arg: init_arg],
       name: :"#{__MODULE__}.#{uid}"
@@ -50,8 +47,8 @@ defmodule Tello.Client do
 
   @doc false
   @spec pid_for(pid, Controller.t() | StatusListener.t()) :: pid | nil
-  def pid_for(supervisor, module) do
-    supervisor
+  def pid_for(client, module) do
+    client
     |> Supervisor.which_children()
     |> Enum.find_value(fn
       {^module, pid, :worker, _arg} ->
