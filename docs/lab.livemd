@@ -33,7 +33,8 @@ Start Tello client
 
 ```elixir
 args = [
-  client: [ip: {127, 0, 0, 1}, port: tello_server_port, receiver: MyReceiver]
+  controller: [ip: {127, 0, 0, 1}, port: tello_server_port, receiver: MyReceiver],
+  status_listener: [port: 8890, handler: nil]
 ]
 
 {:ok, supervisor, client, status_listener} = Tello.start(args)
