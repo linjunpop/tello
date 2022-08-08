@@ -2,6 +2,8 @@
 
 ## main
 
+## v0.3.0
+
 - Added `Tello.Manger.client_pids/1` to fetch the running `Tello.Client` PIDs.
 - Use `integer` instead of `reference` as `Tello.Client` name's identity.
 
