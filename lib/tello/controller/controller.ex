@@ -2,7 +2,30 @@ defmodule Tello.Controller do
   @moduledoc """
   GenServer to connect to a Tello.
 
-  Uses `Tello.start/1` to start a client.
+  Uses `Tello.Controller.start_link/1` to start a controller.
+
+      iex> {:ok, controller} = Tello.Controller.start_link([ip: {127, 0, 0, 1}, port: tello_server_port, receiver: MyReceiver])
+      {:ok, controller}
+
+  You need to first enable the SDK mode
+
+      # Enable Tello's SDK mode
+      iex> Tello.Controller.enable(controller)
+      :ok
+
+  Then you can send commands to control your Tello.Application
+
+  ## Example
+
+      iex> Tello.Controller.get_sdk_version(controller)
+      :ok
+
+
+  > #### Note {: .info}
+  >
+  > The communication between this module and the Tello is always async,
+  > so the return value of the functions only garantee the command has been sent to Tello.
+  > You must check the response from Tello in your implementation of `Tello.Controller.Receiver`,
   """
 
   use GenServer
@@ -83,6 +106,11 @@ defmodule Tello.Controller do
 
   @doc """
   Enable Tello's SDK mode.
+
+  ## Examples
+
+      iex> Tello.Controller.enable(controller)
+      :ok
   """
   @spec enable(pid) :: :ok | {:error, any()}
   def enable(controller) do
@@ -91,6 +119,11 @@ defmodule Tello.Controller do
 
   @doc """
   Auto takeoff.
+
+  ## Examples
+
+      iex> Tello.Controller.takeoff(controller)
+      :ok
   """
   @spec takeoff(pid) :: :ok | {:error, any()}
   def takeoff(controller) do
@@ -99,6 +132,11 @@ defmodule Tello.Controller do
 
   @doc """
   Auto landing.
+
+  ## Examples
+
+      iex> Tello.Controller.land(controller)
+      :ok
   """
   @spec land(pid) :: :ok | {:error, any()}
   def land(controller) do
@@ -107,6 +145,11 @@ defmodule Tello.Controller do
 
   @doc """
   Stop motors immediately.
+
+  ## Examples
+
+      iex> Tello.Controller.emergency(controller)
+      :ok
   """
   @spec emergency(pid) :: :ok | {:error, any()}
   def emergency(controller) do
@@ -115,6 +158,11 @@ defmodule Tello.Controller do
 
   @doc """
   Hover in the air.
+
+  ## Examples
+
+      iex> Tello.Controller.stop(controller)
+      :ok
   """
   @spec stop(pid) :: :ok | {:error, any()}
   def stop(controller) do
@@ -123,6 +171,11 @@ defmodule Tello.Controller do
 
   @doc """
   Set the video stream to on/off.
+
+  ## Examples
+
+      iex> Tello.Controller.stream(controller, :on)
+      :ok
   """
   @spec stream(pid(), :on | :off) :: :ok | {:error, any()}
   def stream(controller, toggle) when toggle in [:on, :off] do
@@ -134,7 +187,12 @@ defmodule Tello.Controller do
   [:up, :down, :left, :right, :forward, :back]
   |> Enum.each(fn command ->
     @doc """
-    Fly #{command} for `distance` cm.
+    Fly #{command} for `distance` in centimeter.
+
+    ## Examples
+
+      iex> Tello.Controller.#{command}(controller, 2)
+      :ok
     """
     @spec unquote(command)(pid, integer) :: :ok | {:error, any()}
     def unquote(command)(controller, distance) do
@@ -152,6 +210,11 @@ defmodule Tello.Controller do
   - `:right`
   - `forward`
   - `back`
+
+  ## Examples
+
+      iex> Tello.Controller.flip(controller, :right)
+      :ok
   """
   @spec flip(pid, :back | :forward | :left | :right) :: :ok | {:error, any()}
   def flip(controller, direction)
@@ -163,6 +226,11 @@ defmodule Tello.Controller do
 
   @doc """
   Rotate `degree` degrees on `direction`.
+
+  ## Examples
+
+      iex> Tello.Controller.rotate(controller, :clockwise, 45)
+      :ok
   """
   @spec rotate(pid(), :clockwise | :counterclockwise, integer()) :: :ok | {:error, any()}
   def rotate(controller, direction, degree)
@@ -176,12 +244,20 @@ defmodule Tello.Controller do
   Fly to coordinate `x,y,z` at `speed` (cm/s).
 
   If `mission_pad_id` is set, the coordinates will be set of the Mission Pad.
+
+  ## Examples
+
+    iex> Tello.Controller.go(controller, {10, 20, 30}, 23)
+    :ok
+
+    iex> Tello.Controller.go(controller, {10, 10, 10}, 13, :m3)
+    :ok
   """
   @spec go(pid(), coordinate, integer(), mission_pad_id() | nil) :: :ok | {:error, any()}
   def go(controller, {x, y, z}, speed, mission_pad_id \\ nil)
       when x in -500..500 and y in -500..500 and z in -500..500 and
              speed in 10..100 and
-             mission_pad_id in [:m1, :m2, :m3, :m4, :m5, :m6, :m7, :m8] do
+             mission_pad_id in [:m1, :m2, :m3, :m4, :m5, :m6, :m7, :m8, nil] do
     command = CommandBuilder.control(:go, {x, y, z}, speed, mission_pad_id)
 
     GenServer.call(controller, {:send, command})
@@ -191,6 +267,11 @@ defmodule Tello.Controller do
   Fly to coordinates `x,y,z` of Mission Pad `first_mission_pad_id` after recognizing,
   and recognize coordinates `0,0,z` of Mission Pad `second_mission_pad_id`
   and rotate to the `yaw` value after hovering at the coordinates.
+
+  ## Examples
+
+      iex> Tello.Controller.jump(controller, {10, -20, 30}, 10, -30, :m1, :m5)
+      :ok
   """
   @spec jump(
           pid,
@@ -210,6 +291,7 @@ defmodule Tello.Controller do
       )
       when x in -500..500 and y in -500..500 and z in -500..500 and
              speed in 10..100 and
+             yaw in -100..100 and
              first_mission_pad_id in [:m1, :m2, :m3, :m4, :m5, :m6, :m7, :m8] and
              second_mission_pad_id in [:m1, :m2, :m3, :m4, :m5, :m6, :m7, :m8] do
     command =
@@ -228,6 +310,11 @@ defmodule Tello.Controller do
   @doc """
   Fly at a curve according to the two given coordinates of the Mission Pad `mission_pad_id`
   at `speed` (cm/s).
+
+  ## Examples
+
+      iex> Tello.Controller.curve(controller, {1, 2, 3}, {3, 2, 1}, 10, :m8)
+      :ok
   """
   @spec curve(pid, coordinate(), coordinate(), integer(), mission_pad_id() | nil) ::
           :ok | {:error, any()}
@@ -249,6 +336,11 @@ defmodule Tello.Controller do
 
   @doc """
   Set speed to `speed` cm/s
+
+  ## Examples
+
+      iex> Tello.Controller.set_speed(controller, 30)
+      :ok
   """
   @spec set_speed(pid(), integer()) :: :ok | {:error, any()}
   def set_speed(controller, speed) when speed in 10..100 do
@@ -259,6 +351,11 @@ defmodule Tello.Controller do
 
   @doc """
   Set remote controller via four channels
+
+  ## Examples
+
+      iex> Tello.Controller.set_remote_controller(controller, {:left, 10}, {:forward, 20}, {:up, 10}, -30)
+      :ok
   """
   @spec set_remote_controller(
           pid(),
@@ -289,6 +386,11 @@ defmodule Tello.Controller do
 
   @doc """
   Set Wi-Fi SSID and password
+
+  ## Examples
+
+      iex> Tello.Controller.set_wifi(controller, "mywifi", "mypass")
+      :ok
   """
   @spec set_wifi(pid(), String.t(), String.t()) :: :ok | {:error, any()}
   def set_wifi(controller, ssid, password) do
@@ -298,7 +400,12 @@ defmodule Tello.Controller do
   end
 
   @doc """
-  Set Mission Pad detection to on/off
+  Toggle Mission Pad detection on/off
+
+  ## Examples
+
+      iex> Tello.Controller.set_mission_pad_detection(controller, :on)
+      :ok
   """
   @spec set_mission_pad_detection(pid(), :off | :on) :: :ok | {:error, any()}
   def set_mission_pad_detection(controller, toggle)
@@ -310,6 +417,11 @@ defmodule Tello.Controller do
 
   @doc """
   Set Mission Pad detection mode
+
+  ## Examples
+
+      iex> Tello.Controller.set_mission_pad_detection_mode(controller, :both)
+      :ok
   """
   @spec set_mission_pad_detection_mode(
           pid(),
@@ -324,6 +436,11 @@ defmodule Tello.Controller do
 
   @doc """
   Set the Tello to station mode, and connect to the access point.
+
+  ## Examples
+
+      iex> Tello.Controller.connect_to_ap(controller, "myssid", "mypass")
+      :ok
   """
   @spec connect_to_ap(pid(), String.t(), String.t()) :: :ok | {:error, any()}
   def connect_to_ap(controller, ssid, password) do
@@ -334,6 +451,11 @@ defmodule Tello.Controller do
 
   @doc """
   Get current speed (cm/s).
+
+  ## Examples
+
+      iex> Tello.Controller.get_speed(controller)
+      :ok
   """
   @spec get_speed(pid) :: :ok | {:error, any()}
   def get_speed(controller) do
@@ -344,6 +466,11 @@ defmodule Tello.Controller do
 
   @doc """
   Get current battery percentage.
+
+  ## Examples
+
+      iex> Tello.Controller.get_battery(controller)
+      :ok
   """
   @spec get_battery(pid) :: :ok | {:error, any()}
   def get_battery(controller) do
@@ -354,6 +481,11 @@ defmodule Tello.Controller do
 
   @doc """
   Get current flight time.
+
+  ## Examples
+
+      iex> Tello.Controller.get_time(controller)
+      :ok
   """
   @spec get_time(pid) :: :ok | {:error, any()}
   def get_time(controller) do
@@ -364,6 +496,11 @@ defmodule Tello.Controller do
 
   @doc """
   Get Wi-Fi SNR.
+
+  ## Examples
+
+      iex> Tello.Controller.get_wifi_snr(controller)
+      :ok
   """
   @spec get_wifi_snr(pid) :: :ok | {:error, any()}
   def get_wifi_snr(controller) do
@@ -374,6 +511,11 @@ defmodule Tello.Controller do
 
   @doc """
   Get Tello SDK version
+
+  ## Examples
+
+      iex> Tello.Controller.get_sdk_version(controller)
+      :ok
   """
   @spec get_sdk_version(pid) :: :ok | {:error, any()}
   def get_sdk_version(controller) do
@@ -384,6 +526,11 @@ defmodule Tello.Controller do
 
   @doc """
   Get Tello serial number
+
+  ## Examples
+
+      iex> Tello.Controller.get_serial_number(controller)
+      :ok
   """
   @spec get_serial_number(pid) :: :ok | {:error, any()}
   def get_serial_number(controller) do

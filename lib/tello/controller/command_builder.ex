@@ -39,7 +39,14 @@ defmodule Tello.Controller.CommandBuilder do
     "ccw #{degree}"
   end
 
-  def control(:go, {x, y, z}, speed, mission_pad_id \\ nil)
+  def control(:go, {x, y, z}, speed)
+      when x in -500..500 and y in -500..500 and z in -500..500 and
+             speed in 10..100 do
+    "go #{x} #{y} #{z} #{speed}"
+    |> String.trim()
+  end
+
+  def control(:go, {x, y, z}, speed, mission_pad_id)
       when x in -500..500 and y in -500..500 and z in -500..500 and
              speed in 10..100 do
     "go #{x} #{y} #{z} #{speed} #{mission_pad_id}"
