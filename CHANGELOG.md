@@ -2,6 +2,8 @@
 
 ## main
 
+- Fixes `use Tello.StatusListener.Handler` will references wrong behaviour.
+
 ## v0.3.0
 
 - Added `Tello.Manger.client_pids/1` to fetch the running `Tello.Client` PIDs.

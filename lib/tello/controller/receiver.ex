@@ -38,7 +38,7 @@ defmodule Tello.Controller.Receiver do
     if function_exported?(receiver_module, :receive_message, 1) do
       receiver_module.receive_message(data)
     else
-      Logger.warn(
+      Logger.warning(
         "Please implement `receive_message/1` for the custom `Tello.Controller.Receiver` handler."
       )
     end

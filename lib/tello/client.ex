@@ -29,18 +29,15 @@ defmodule Tello.Client do
   def init(uid: uid, init_arg: init_arg) do
     controller_arg = Keyword.get(init_arg, :controller)
 
-    children = [
-      {Controller, [uid: uid, arg: controller_arg]}
-    ]
-
     children =
-      case Keyword.get(init_arg, :status_listener) do
-        nil ->
-          children
-
-        status_listener_arg ->
-          children ++ [{StatusListener, [uid: uid, arg: status_listener_arg]}]
-      end
+      ([
+         {Controller, [uid: uid, arg: controller_arg]}
+       ] ++
+         case Keyword.get(init_arg, :status_listener) do
+           nil -> []
+           status_listener_arg -> [{StatusListener, [uid: uid, arg: status_listener_arg]}]
+         end)
+      |> Enum.reject(&is_nil/1)
 
     Supervisor.init(children, strategy: :one_for_one)
   end

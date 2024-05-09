@@ -29,7 +29,7 @@ defmodule Tello.StatusListener.Handler do
 
   defmacro __using__(_) do
     quote do
-      @behaviour Tello.StatusListener.Status
+      @behaviour Tello.StatusListener.Handler
     end
   end
 
@@ -40,7 +40,7 @@ defmodule Tello.StatusListener.Handler do
     if function_exported?(handler_module, :handle_status, 1) do
       handler_module.handle_status(status)
     else
-      Logger.warn(
+      Logger.warning(
         "Please implement `handle_status/1` for the custom `Tello.StatusListener.Handler` handler."
       )
     end

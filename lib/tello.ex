@@ -11,7 +11,12 @@ defmodule Tello do
   ]
 
   @spec start(Client.init_arg()) ::
-          {:ok, client :: pid, controller :: pid, status_listener :: nil | pid}
+          {
+            :ok,
+            client :: pid,
+            controller :: pid,
+            status_listener :: nil | pid
+          }
   @doc """
   Start a new `Tello.Client`.
 
