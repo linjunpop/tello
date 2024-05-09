@@ -1,10 +1,10 @@
-{:ok, _} = Tello.CyberTello.start_link([])
-|> IO.inspect()
+{:ok, _} =
+  Tello.CyberTello.start_link([])
 
-{:ok, tello_server_port} = Tello.CyberTello.port()
-|> IO.inspect()
+{:ok, tello_server_port} =
+  Tello.CyberTello.port()
 
-defmodule Receiver do
+defmodule MyReceiver do
   use Tello.Controller.Receiver
 
   def receive_message(data) do
@@ -12,11 +12,19 @@ defmodule Receiver do
   end
 end
 
+defmodule MyStatusHandler do
+  use Tello.StatusListener.Handler
+
+  def handle_status(status) do
+    IO.inspect("Status: #{inspect(status)}")
+  end
+end
+
 {:ok, client, controller, status_listener} =
-   Tello.start(
-      controller: [ip: {127, 0, 0, 1}, port: tello_server_port, receiver: Receiver]
-    )
-|> IO.inspect()
+  Tello.start(
+    controller: [ip: {127, 0, 0, 1}, port: tello_server_port, receiver: MyReceiver],
+    status_listener: [port: 8890, handler: MyStatusHandler]
+  )
 
 Tello.Controller.enable(controller)
 Tello.Controller.takeoff(controller)
